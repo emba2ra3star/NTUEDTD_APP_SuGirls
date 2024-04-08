@@ -1,5 +1,5 @@
-const settingScreen=()=>{
+const SettingScreen=()=>{
     
 };
 
-export default settingScreen;
+export default SettingScreen;

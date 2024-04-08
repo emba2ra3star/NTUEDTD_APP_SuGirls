@@ -1,5 +1,5 @@
-const analyzeScreen=()=>{
+const AnalyzeScreen=()=>{
     
 };
 
-export default analyzeScreen;
+export default AnalyzeScreen;

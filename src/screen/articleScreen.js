@@ -1,5 +1,5 @@
-const articleScreen=()=>{
+const ArticleScreen=()=>{
 
 };
 
-export default articleScreen;
+export default ArticleScreen;

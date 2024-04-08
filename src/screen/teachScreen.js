@@ -1,5 +1,5 @@
-const teachScreen=()=>{
+const TeachScreen=()=>{
     
 };
 
-export default teachScreen;
+export default TeachScreen;
