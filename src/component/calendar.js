@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 
 export default function MyCalendar() {
     return (
-        <View style={{ flex: 1, width: "100%", marginTop: 5, paddingHorizontal: "2%" }}>
-            <View style={{ flexDirection: "row" }}>
+        <View style={{ flex: 1, width: "100%", marginTop: 5 }}>
+            <View style={{ flexDirection: "row",marginLeft:"2%" }}>
                 <Image style={{}} source={require('../../assets/img/Vector.png')} />
                 <Text style={{ paddingLeft: 5 }}>2024</Text>
             </View>
@@ -20,39 +20,73 @@ export default function MyCalendar() {
                 <Text style={{ color: "#ffb673" }}>六</Text>
             </View>
 
-            <Calendar
-                current={'2024-03-20'} // 初始显示的日期
-                minDate={'2024-01-01'} // 允许选择的最早日期
-                maxDate={'2024-12-31'} // 允许选择的最晚日期
-                onDayPress={(day) => { console.log('selected day', day) }} // 选择日期时触发的回调
-                markingType="period"
-                markedDates={{
-                    // '2024-03-26': { selected: true, marked: true, selectedColor: '#EE7B7B' }, // 标记特定日期
-                    // '2024-03-27': { marked: true },
-                    // '2024-03-28': { disabled: true }
+            <View style={{paddingHorizontal: "2%"}}>
+                <Calendar
+                    current={'2024-03-20'} // 初始显示的日期
+                    minDate={'2024-01-01'} // 允许选择的最早日期
+                    maxDate={'2024-12-31'} // 允许选择的最晚日期
+                    onDayPress={(day) => { console.log('selected day', day) }} // 选择日期时触发的回调
+                    markingType="period"
+                    markedDates={{
+                        // '2024-03-26': { selected: true, marked: true, selectedColor: '#EE7B7B' }, // 标记特定日期
+                        // '2024-03-27': { marked: true },
+                        // '2024-03-28': { disabled: true }
 
-                    '2024-03-24': { startingDay: true, color: 'green' },
-                    '2024-03-27': { selected: true, endingDay: true, color: 'green', textColor: 'gray' },
-                    '2024-03-30': { disabled: true, startingDay: true, color: 'green', endingDay: true }
+                        '2024-03-24': { startingDay: true, color: 'green' },
+                        '2024-03-27': { selected: true, endingDay: true, color: 'green', textColor: 'gray' },
+                        '2024-03-30': { disabled: true, startingDay: true, color: 'green', endingDay: true }
 
-                }}
-                theme={{
-                    backgroundImage:"https://raw.githubusercontent.com/emba2ra3star/NTUEDTD_APP_SuGirls/main/assets/Group%2098.png",
-                    textSectionTitleColor: '#b6c1cd', // 顶部月份文字颜色
-                    textMonthFontWeight: 'bold', // 月份文字的粗细
-                    textMonthFontSize: 20, // 月份文字的大小
-                    todayTextColor: '#00adf5', // 当天文字颜色
-                }}
+                    }}
+                    theme={{
+                        backgroundImage: "https://raw.githubusercontent.com/emba2ra3star/NTUEDTD_APP_SuGirls/main/assets/Group%2098.png",
+                        textSectionTitleColor: '#b6c1cd', // 顶部月份文字颜色
+                        textMonthFontWeight: 'bold', // 月份文字的粗细
+                        textMonthFontSize: 20, // 月份文字的大小
+                        todayTextColor: '#00adf5', // 当天文字颜色
+                    }}
 
-                hideExtraDays={true}
-                hideDayNames={true}
-            // renderHeader={}???
-            />
+                    hideExtraDays={true}
+                    hideDayNames={true}
+                // renderHeader={}???
+                />
 
-            <View>
-                <Image source={{uri:""}} />
+                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between",marginTop:5 }}>
+                    <View style={styles.calendarView}>
+                        <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_period.png?raw=true" }} style={styles.calendarIcon} />
+                        <Text style={{ marginHorizontal: 5 }}>經期</Text>
+                    </View>
+                    <View style={styles.calendarView}>
+                        <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_today.png?raw=true" }} style={styles.calendarIcon} />
+                        <Text style={{ marginHorizontal: 5 }}>今日</Text>
+                    </View>
+                    <View style={styles.calendarView}>
+                        <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_predict.png?raw=true" }} style={styles.calendarIcon} />
+                        <Text style={{ marginHorizontal: 5 }}>預估經期</Text>
+                    </View>
+                    <View style={styles.calendarView}>
+                        <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_eggday.png?raw=true" }} style={styles.calendarIcon} />
+                        <Text style={{ marginHorizontal: 5 }}>排卵日</Text>
+                    </View>
+                    <View style={styles.calendarView}>
+                        <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_egg.png?raw=true" }} style={{ width: 22, height: 11, marginTop: 3 }} />
+                        <Text style={{ marginHorizontal: 5 }}>排卵期 </Text>
+                    </View>
+                </View>
             </View>
-
         </View>
     );
 }
+
+const styles = StyleSheet.create(
+    {
+        calendarIcon: {
+            width: 15,
+            height: 15,
+            marginTop: 3
+        },
+        calendarView: {
+            flexDirection: "row",
+            alignItems: "center"
+        }
+    }
+);
