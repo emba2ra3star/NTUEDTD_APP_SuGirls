@@ -4,7 +4,7 @@ import { Calendar } from 'react-native-calendars';
 
 export default function MyCalendar() {
     return (
-        <View style={{ flex: 1, width: "100%", marginTop: 5 }}>
+        <View style={{ width: "100%", marginTop: 5 }}>
             <View style={{ flexDirection: "row",marginLeft:"2%" }}>
                 <Image style={{}} source={require('../../assets/img/Vector.png')} />
                 <Text style={{ paddingLeft: 5 }}>2024</Text>
