@@ -49,6 +49,10 @@ export default function MyCalendar() {
             // renderHeader={}???
             />
 
+            <View>
+                <Image source={{uri:""}} />
+            </View>
+
         </View>
     );
 }

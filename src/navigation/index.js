@@ -23,52 +23,13 @@ const Navigation = () => {
   )
 };
 
-// const BottomTabNavigator = () => {
-//   return (
-//     <Tab.Navigator
-//       initialRouteName="首頁"
-//       screenOptions={{
-//         tabBarActiveTintColor: '#e91e63',
-//         tabBarStyle: { width: "100%" },
-//         // headerShown: false
-//       }}
-//     >
-//       <Tab.Screen
-//         name="首頁"
-//         component={HomeScreen}
-//         options={{
-//           headerShown: false,
-//           title: "Home",
-//           tabBarIcon: ({ color }) => (
-//             <MaterialCommunityIcons name="home" color={color} size={26} />
-//           ),
-//         }}
-//       />
-//       <Tab.Screen
-//         name="個人頁"
-//         component={SettingScreen}
-//         options={{
-//           title: "Settings",
-//           headerTitleStyle: {
-//             fontWeight: '400',
-//             fontSize: 20
-//           },
-//           tabBarIcon: ({ color }) => (
-//             <MaterialCommunityIcons name="cog" color={color} size={26} />
-//           ),
-//         }}
-//       />
-//     </Tab.Navigator>
-//   );
-// }
-
 const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
       initialRouteName="首頁"
     >
       <Tab.Screen name="分析頁" component={AnalyzeStack} options={{ title: "分析頁", headerTitleAlign: "center", tabBarIcon: ({ color }) => (<MaterialCommunityIcons name="chart-line" color={color} size={26} />) }} />
-      <Tab.Screen name="首頁" component={HomeScreen} options={{ title: "首頁", headerTitleAlign: "center", tabBarIcon: ({ color }) => (<MaterialCommunityIcons name="home" color={color} size={26} />) }} />
+      <Tab.Screen name="首頁" component={HomeScreen} options={{ title: "首頁", headerShown:false, tabBarIcon: ({ color }) => (<MaterialCommunityIcons name="home" color={color} size={26} />) }} />
       <Tab.Screen name="個人頁" component={SettingStack} options={{ title: "個人頁", headerTitleAlign: "center", tabBarIcon: ({ color }) => (<MaterialCommunityIcons name="account" color={color} size={26} />) }} />
     </Tab.Navigator>
   )
