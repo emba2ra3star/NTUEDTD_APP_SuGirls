@@ -1,73 +1,74 @@
 import React, { useState } from "react";
 import MyCalendar from "../component/calendar";
-import { Button, StyleSheet, Text, View, Switch, TextInput } from 'react-native';
+import { Button, StyleSheet, Text, View, Switch, TextInput, ScrollView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const HomeScreen = () => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     return (
-        <View style={{ flex: 1, backgroundColor: "#fff" }}>
-            <MyCalendar />
-            {/* <Text>{MyCalendar.dayOfWeekNames}</Text> */}
-            <View style={styles.optionContent}>
-                {/* 月事開始 */}
-                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" ,marginBottom:10}}>
-                    <View style={{ flexDirection: "row" }}>
-                        <MaterialCommunityIcons name="water-outline" color="black" size={26} />
-                        <Text style={{ fontSize: 18 }}>經期開始</Text>
-                    </View>
-                    <View style={{ justifyContent: "flex-end" }}>
-                        <Switch
+        <ScrollView>
+            <View style={{ flex: 1, backgroundColor: "#fff" }}>
+                <MyCalendar />
+                {/* <Text>{MyCalendar.dayOfWeekNames}</Text> */}
+                <View style={styles.optionContent}>
+                    {/* 月事開始 */}
+                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+                        <View style={{ flexDirection: "row" }}>
+                            <MaterialCommunityIcons name="water-outline" color="black" size={26} />
+                            <Text style={{ fontSize: 18 }}>經期開始</Text>
+                        </View>
+                        <View style={{ justifyContent: "flex-end" }}>
+                            <Switch
 
-                            trackColor={{ false: '#F2D7C2', true: '#FF5656' }}
-                            thumbColor={isEnabled ? '#FF5656' : 'white'}
-                            ios_backgroundColor="white"
-                            onValueChange={toggleSwitch}
-                            value={isEnabled}
+                                trackColor={{ false: '#F2D7C2', true: '#FF5656' }}
+                                thumbColor={isEnabled ? '#FF5656' : 'white'}
+                                ios_backgroundColor="white"
+                                onValueChange={toggleSwitch}
+                                value={isEnabled}
+                            />
+                        </View>
+                    </View>
+
+                    {/* 身體狀況 */}
+                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+                        <View style={{ flexDirection: "row" }}>
+                            <MaterialCommunityIcons name="clipboard-list-outline" color="black" size={26} />
+                            <Text style={{ fontSize: 18 }}>身體狀況</Text>
+                        </View>
+                        <View style={{ justifyContent: "flex-end", marginRight: 13 }}>
+                            <MaterialCommunityIcons name="plus" color="black" size={26} />
+                        </View>
+                    </View>
+
+                    {/* 備註 */}
+                    <View style={{ justifyContent: "space-between" }}>
+                        <View style={{ flexDirection: "row" }}>
+                            <MaterialCommunityIcons name="pencil" color="black" size={26} />
+                            <Text style={{ fontSize: 18 }}>備註</Text>
+                        </View>
+                        <TextInput
+                            inputMode="text"
+                            style={{
+                                width: "100%",
+                                height: 100,
+                                marginTop: 5,
+                                backgroundColor: '#FFFEFD',
+                                borderRadius: 10,
+                                borderColor: '#cbcbcb',
+
+
+                            }}
+                            placeholder="今天狀況如何..."
+                            placeholderTextColor="#676767"
                         />
-                    </View>
-                </View>
 
-                {/* 身體狀況 */}
-                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" ,marginBottom:20}}>
-                    <View style={{ flexDirection: "row" }}>
-                        <MaterialCommunityIcons name="clipboard-list-outline" color="black" size={26} />
-                        <Text style={{ fontSize: 18 }}>身體狀況</Text>
                     </View>
-                    <View style={{ justifyContent: "flex-end", marginRight: 13 }}>
-                        <MaterialCommunityIcons name="plus" color="black" size={26} />
-                    </View>
-                </View>
 
-                {/* 備註 */}
-                <View style={{ justifyContent: "space-between" }}>
-                    <View style={{ flexDirection: "row" }}>
-                        <MaterialCommunityIcons name="pencil" color="black" size={26} />
-                        <Text style={{ fontSize: 18 }}>備註</Text>
-                    </View>
-                    <TextInput 
-                        inputMode="text"
-                        style={{
-                            width: "100%",
-                            height: 100,
-                            marginTop:5,
-                            backgroundColor: '#FFFEFD',
-                            borderRadius: 10,
-                            borderColor: '#cbcbcb',
-                            
-                            
-                        }}
-                        placeholder="今天狀況如何..."
-                        placeholderTextColor="#676767"
-                    />
-                    
                 </View>
-
             </View>
-        </View>
 
-
+        </ScrollView>
 
     )
 };
