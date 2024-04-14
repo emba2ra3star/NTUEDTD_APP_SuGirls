@@ -13,21 +13,49 @@ const HomeScreen = () => {
                 {/* <Text>{MyCalendar.dayOfWeekNames}</Text> */}
                 <View style={styles.optionContent}>
                     {/* 月事開始 */}
-                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-                        <View style={{ flexDirection: "row" }}>
-                            <MaterialCommunityIcons name="water-outline" color="black" size={26} />
-                            <Text style={{ fontSize: 18 }}>經期開始</Text>
-                        </View>
-                        <View style={{ justifyContent: "flex-end" }}>
-                            <Switch
+                    <View style={{ flex: 1 }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+                            <View style={{ flexDirection: "row" }}>
+                                <MaterialCommunityIcons name="water-outline" color="black" size={26} />
+                                <Text style={{ fontSize: 18 }}>經期開始</Text>
+                            </View>
+                            <View style={{ justifyContent: "flex-end" }}>
+                                <Switch
 
-                                trackColor={{ false: '#F2D7C2', true: '#FF5656' }}
-                                thumbColor={isEnabled ? '#FF5656' : 'white'}
-                                ios_backgroundColor="white"
-                                onValueChange={toggleSwitch}
-                                value={isEnabled}
-                            />
+                                    trackColor={{ false: '#F2D7C2', true: '#FF5656' }}
+                                    thumbColor={isEnabled ? '#FF5656' : 'white'}
+                                    ios_backgroundColor="white"
+                                    onValueChange={toggleSwitch}
+                                    value={isEnabled}
+                                />
+                            </View>
                         </View>
+
+                        {isEnabled && (<View style={{marginBottom:15}}>
+                            <View style={{ flexDirection: "row",justifyContent:"space-between",marginLeft:30,marginVertical:5 }}>
+                                <Text style={{fontSize:16}}>流量</Text>
+                                <View style={{ flexDirection: "row" }}>
+                                    <MaterialCommunityIcons name="water" color="#CCCCCC" size={26} />
+                                    <MaterialCommunityIcons name="water" color="#CCCCCC" size={26} />
+                                    <MaterialCommunityIcons name="water" color="#CCCCCC" size={26} />
+                                    <MaterialCommunityIcons name="water" color="#CCCCCC" size={26} />
+                                    <MaterialCommunityIcons name="water" color="#CCCCCC" size={26} />
+                                </View>
+                            </View>
+
+                            <View style={{ flexDirection: "row",justifyContent:"space-between",marginLeft:30,marginVertical:5 }}>
+                                <Text style={{fontSize:16}}>疼痛程度</Text>
+                                <View style={{ flexDirection: "row" }}>
+                                    <MaterialCommunityIcons name="lightning-bolt" color="#CCCCCC" size={26} />
+                                    <MaterialCommunityIcons name="lightning-bolt" color="#CCCCCC" size={26} />
+                                    <MaterialCommunityIcons name="lightning-bolt" color="#CCCCCC" size={26} />
+                                    <MaterialCommunityIcons name="lightning-bolt" color="#CCCCCC" size={26} />
+                                    <MaterialCommunityIcons name="lightning-bolt" color="#CCCCCC" size={26} />
+                                </View>
+                            </View>
+
+                        </View>)}
+                        
                     </View>
 
                     {/* 身體狀況 */}
