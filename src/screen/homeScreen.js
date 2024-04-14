@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import MyCalendar from "../component/calendar";
-import { Button, StyleSheet, Text, View, Switch, TextInput, ScrollView } from 'react-native';
+import { Button, StyleSheet, Text, View, Switch, TextInput, ScrollView, Pressable } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const HomeScreen = () => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+    // 流量&疼痛程度rating
+    const [flowRating, setFlowRating] = useState(false);
+    const [PDRating, setPDRating] = useState(false);
+
     return (
         <ScrollView>
             <View style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -31,31 +36,33 @@ const HomeScreen = () => {
                             </View>
                         </View>
 
-                        {isEnabled && (<View style={{marginBottom:15}}>
-                            <View style={{ flexDirection: "row",justifyContent:"space-between",marginLeft:30,marginVertical:5 }}>
-                                <Text style={{fontSize:16}}>流量</Text>
+                        {isEnabled && (<View style={{ marginBottom: 15 }}>
+                            <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: 30, marginVertical: 5 }}>
+                                <Text style={{ fontSize: 16 }}>流量</Text>
                                 <View style={{ flexDirection: "row" }}>
-                                    <MaterialCommunityIcons name="water" color="#CCCCCC" size={26} />
-                                    <MaterialCommunityIcons name="water" color="#CCCCCC" size={26} />
-                                    <MaterialCommunityIcons name="water" color="#CCCCCC" size={26} />
-                                    <MaterialCommunityIcons name="water" color="#CCCCCC" size={26} />
-                                    <MaterialCommunityIcons name="water" color="#CCCCCC" size={26} />
+                                    <View style={{ flexDirection: "row" }}>
+                                        {[1, 2, 3, 4, 5].map((index) => (
+                                            <Pressable key={index} onPress={() => setFlowRating(index)}>
+                                                <MaterialCommunityIcons name="water" color={index <= flowRating ? "black" : "#CCCCCC"} size={26} />
+                                            </Pressable>
+                                        ))}
+                                    </View>
                                 </View>
                             </View>
 
-                            <View style={{ flexDirection: "row",justifyContent:"space-between",marginLeft:30,marginVertical:5 }}>
-                                <Text style={{fontSize:16}}>疼痛程度</Text>
+                            <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: 30, marginVertical: 5 }}>
+                                <Text style={{ fontSize: 16 }}>疼痛程度</Text>
                                 <View style={{ flexDirection: "row" }}>
-                                    <MaterialCommunityIcons name="lightning-bolt" color="#CCCCCC" size={26} />
-                                    <MaterialCommunityIcons name="lightning-bolt" color="#CCCCCC" size={26} />
-                                    <MaterialCommunityIcons name="lightning-bolt" color="#CCCCCC" size={26} />
-                                    <MaterialCommunityIcons name="lightning-bolt" color="#CCCCCC" size={26} />
-                                    <MaterialCommunityIcons name="lightning-bolt" color="#CCCCCC" size={26} />
+                                    {[1, 2, 3, 4, 5].map((index) => (
+                                        <Pressable key={index} onPress={() => setPDRating(index)}>
+                                            <MaterialCommunityIcons name="lightning-bolt" color={index <= PDRating ? "black" : "#CCCCCC"} size={26} />
+                                        </Pressable>
+                                    ))}
                                 </View>
                             </View>
 
                         </View>)}
-                        
+
                     </View>
 
                     {/* 身體狀況 */}
