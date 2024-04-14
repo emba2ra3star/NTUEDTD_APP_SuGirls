@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, View } from "react-native";
+import { Image, KeyboardAvoidingView, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -25,13 +25,15 @@ const Navigation = () => {
 
 const BottomTabNavigator = () => {
   return (
-    <Tab.Navigator
-      initialRouteName="首頁"
-    >
-      <Tab.Screen name="分析頁" component={AnalyzeStack} options={{ title: "分析頁", headerTitleAlign: "center", tabBarIcon: ({ color }) => (<MaterialCommunityIcons name="chart-line" color={color} size={26} />) }} />
-      <Tab.Screen name="首頁" component={HomeScreen} options={{ title: "首頁", headerShown:false, tabBarIcon: ({ color }) => (<MaterialCommunityIcons name="home" color={color} size={26} />) }} />
-      <Tab.Screen name="個人頁" component={SettingStack} options={{ title: "個人頁", headerTitleAlign: "center", tabBarIcon: ({ color }) => (<MaterialCommunityIcons name="account" color={color} size={26} />) }} />
-    </Tab.Navigator>
+    <KeyboardAvoidingView style={{flex:1}} behavior={"height"} keyboardVerticalOffset={-50}>
+      <Tab.Navigator
+        initialRouteName="首頁"
+      >
+        <Tab.Screen name="分析頁" component={AnalyzeStack} options={{ title: "分析頁", headerTitleAlign: "center", tabBarIcon: ({ color }) => (<MaterialCommunityIcons name="chart-line" color={color} size={26} />) }} />
+        <Tab.Screen name="首頁" component={HomeScreen} options={{ title: "首頁", headerShown: false, tabBarIcon: ({ color }) => (<MaterialCommunityIcons name="home" color={color} size={26} />) }} />
+        <Tab.Screen name="個人頁" component={SettingStack} options={{ title: "個人頁", headerTitleAlign: "center", tabBarIcon: ({ color }) => (<MaterialCommunityIcons name="account" color={color} size={26} />) }} />
+      </Tab.Navigator>
+    </KeyboardAvoidingView>
   )
 };
 
