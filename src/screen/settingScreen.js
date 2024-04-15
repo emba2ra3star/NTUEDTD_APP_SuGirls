@@ -33,11 +33,12 @@ const SettingScreen = () => {
     const dispatch = useDispatch();
     const toggle =()=>{dispatch(toggleColorMode())}
     
+    
 
     return (
         //         <View style={[myStyle.container, isDarkModeEnabled && myStyle.darkModeContainer]}>
         // <View style={myStyle.container}>
-        <View style={styles.container}>
+        <View style={{backgroundColor:colorMode === "light"?"#333333":"white",flex:1}}>
             <View style={styles.settingcontent}>
                 <Text style={styles.title}>經期設定</Text>
                 <View style={styles.listContent}>
@@ -164,7 +165,6 @@ const SettingScreen = () => {
 
 const styles = StyleSheet.create(
     {
-        container: { flex: 1, backgroundColor: "white" },
         settingcontent: { marginHorizontal: 30, marginTop: 10 },
         title: { color: "#FF9E9E" },
         listContent: { backgroundColor: "#FFEEE1", opacity: 0.9, borderRadius: 10, paddingVertical: 5 },
