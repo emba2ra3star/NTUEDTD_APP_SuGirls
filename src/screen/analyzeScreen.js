@@ -10,6 +10,10 @@ import {
     StackedBarChart
 } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
+
+import { myStyle } from '../darkMode/style';
+import { useDarkMode } from '../darkMode/DarkModeContext';
+
 const screenWidth = Dimensions.get('window').width;
 const Cycledata = {
     labels: ["Dec", "Jan", "Feb", "Mar", "Apr"],
@@ -32,7 +36,7 @@ const graphStyle = {
     borderRadius: 8,
     backgroundColor: "#f0f0f0",
     marginLeft: -60,
-    paddingTop: -5
+    paddingTop: -5,
 };
 const LinegraphStyle = {
     marginVertical: 10,
@@ -49,25 +53,25 @@ const chartConfig = {
     strokeWidth: 2,
     barPercentage: 0.8,
     decimalPlaces: 0,
-    barRadius: 10,
-
+    barRadius: 10
 };
 let day = 21;
 const AnalyzeScreen = () => {
     const { navigate } = useNavigation();
+    const { isDarkModeEnabled, toggleDarkMode } = useDarkMode();
     return (
-        <View style={styles.wholeScreen}>
+        <View style={[{alignItems: 'center'},myStyle.container, isDarkModeEnabled && myStyle.darkModeContainer]}>
             <View style={{ width: "100%", paddingHorizontal: "5%" }}>
-                <Text style={{ fontSize: 14, justifyContent: "flex-start" }}>距離下次經期：</Text>
+                <Text style={{ fontSize: 14, justifyContent: "flex-start" , color: isDarkModeEnabled ? "white" : "black"}}>距離下次經期：</Text>
                 <View style={{ justifyContent: "center", flexDirection: "row" }}>
                     <Text style={{ fontSize: 40, color: "#FF795C" }}>{day}</Text>
-                    <Text style={{ fontSize: 15, color: "Black", marginTop: 30 }}>天</Text>
+                    <Text style={{ fontSize: 15, color: "#000000", marginTop: 30 , color: isDarkModeEnabled ? "white" : "black"}}>天</Text>
                 </View>
                 <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                    <Text style={{ fontSize: 12 }}>2024年5月3日</Text>
+                    <Text style={{ fontSize: 12 , color: isDarkModeEnabled ? "white" : "black"}}>2024年5月3日</Text>
                 </View>
             </View>
-            <Pressable onPress={() => navigate('stack科普文章')} style={{ backgroundColor: "#FFD5B8", width: "90%", height: 65, justifyContent: "center", alignItems: "center", borderRadius: 20 }}>
+            <Pressable onPress={() => navigate('stack科普文章')} style={{ backgroundColor: "#FFD5B8",opacity:0.9, width: "90%", height: 65, justifyContent: "center", alignItems: "center", borderRadius: 20 }}>
                 <View >
                     <Text>
                         Article
