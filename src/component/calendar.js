@@ -1,36 +1,27 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-// import { myStyle } from '../darkMode/style';
-// import { useDarkMode } from '../darkMode/DarkModeContext';
-export default function MyCalendar() {
+import { useSelector } from 'react-redux';
+import { selectColorMode } from '../redux/darkModeSlice';
 
-    // const { isDarkModeEnabled, toggleDarkMode } = useDarkMode();
-    const calendarContainerStyle = {
-        // backgroundColor: isDarkModeEnabled ? '#333333' : 'white'
-    };
+
+export default function MyCalendar() {    
+    // darkMode
+    const colorMode = useSelector(selectColorMode);
     return (
-
         <View style={{ width: "100%", marginTop: 5 }}>
             <View style={{ flexDirection: "row", marginLeft: "2%" }}>
-                <Image style={{}} source={require('../../assets/img/Vector.png')} />
-                <Text style={{ paddingLeft: 5 }}>2024</Text>
+                <Image source={require('../../assets/img/Vector.png')} />
+                <Text style={{ paddingLeft: 5,color: colorMode === "light"?"white":"black" }}>2024</Text>
             </View>
 
             <View style={{ flexDirection: "row", justifyContent: "space-around", paddingVertical: 8, borderBottomWidth: 3, borderBottomColor: '#ffd5b8' }}>
-                {/* <Text style={{ color: "#ffb673" }}>日</Text>
-                <Text style={{ color: isDarkModeEnabled ? "white" : "black" }}>一</Text>
-                <Text style={{ color: isDarkModeEnabled ? "white" : "black" }}>二</Text>
-                <Text style={{ color: isDarkModeEnabled ? "white" : "black" }}>三</Text>
-                <Text style={{ color: isDarkModeEnabled ? "white" : "black" }}>四</Text>
-                <Text style={{ color: isDarkModeEnabled ? "white" : "black" }}>五</Text>
-                <Text style={{ color: "#ffb673" }}>六</Text> */}
                 <Text style={{ color: "#ffb673" }}>日</Text>
-                <Text style={{ color:"black" }}>一</Text>
-                <Text style={{ color:"black" }}>二</Text>
-                <Text style={{ color:"black" }}>三</Text>
-                <Text style={{ color:"black" }}>四</Text>
-                <Text style={{ color:"black" }}>五</Text>
+                <Text style={{ color: colorMode === "light"?"white":"black" }}>一</Text>
+                <Text style={{ color: colorMode === "light"?"white":"black" }}>二</Text>
+                <Text style={{ color: colorMode === "light"?"white":"black" }}>三</Text>
+                <Text style={{ color: colorMode === "light"?"white":"black" }}>四</Text>
+                <Text style={{ color: colorMode === "light"?"white":"black" }}>五</Text>
                 <Text style={{ color: "#ffb673" }}>六</Text>
             </View>
 
@@ -63,35 +54,30 @@ export default function MyCalendar() {
 
                     hideExtraDays={true}
                     hideDayNames={true}
-                    style={[calendarContainerStyle, styles.calendar]}
+                    style={styles.calendar}
                 // renderHeader={}???
                 />
 
                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 5 }}>
                     <View style={styles.calendarView}>
                         <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_period.png?raw=true" }} style={styles.calendarIcon} />
-                        {/* <Text style={{ marginHorizontal: 5, color: isDarkModeEnabled ? "white" : "black" }}>經期</Text> */}
-                        <Text style={{ marginHorizontal: 5, color:"black" }}>經期</Text>
+                        <Text style={{ marginHorizontal: 5, color: colorMode === "light"?"white":"black" }}>經期</Text>
                     </View>
                     <View style={styles.calendarView}>
                         <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_today.png?raw=true" }} style={styles.calendarIcon} />
-                        {/* <Text style={{ marginHorizontal: 5, color: isDarkModeEnabled ? "white" : "black" }}>今日</Text> */}
-                        <Text style={{ marginHorizontal: 5, color:"black" }}>今日</Text>
+                        <Text style={{ marginHorizontal: 5, color: colorMode === "light"?"white":"black" }}>今日</Text>
                     </View>
                     <View style={styles.calendarView}>
                         <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_predict.png?raw=true" }} style={styles.calendarIcon} />
-                        {/* <Text style={{ marginHorizontal: 5, color: isDarkModeEnabled ? "white" : "black" }}>預估經期</Text> */}
-                        <Text style={{ marginHorizontal: 5, color:"black" }}>預估經期</Text>
+                        <Text style={{ marginHorizontal: 5, color: colorMode === "light"?"white":"black" }}>預估經期</Text>
                     </View>
                     <View style={styles.calendarView}>
                         <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_eggday.png?raw=true" }} style={styles.calendarIcon} />
-                        {/* <Text style={{ marginHorizontal: 5, color: isDarkModeEnabled ? "white" : "black" }}>排卵日</Text> */}
-                        <Text style={{ marginHorizontal: 5, color:"black" }}>排卵日</Text>
+                        <Text style={{ marginHorizontal: 5, color: colorMode === "light"?"white":"black" }}>排卵日</Text>
                     </View>
                     <View style={styles.calendarView}>
                         <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_egg.png?raw=true" }} style={{ width: 22, height: 11, marginTop: 3 }} />
-                        {/* <Text style={{ marginHorizontal: 5, color: isDarkModeEnabled ? "white" : "black" }}>排卵期 </Text> */}
-                        <Text style={{ marginHorizontal: 5, color:"black" }}>排卵期 </Text>
+                        <Text style={{ marginHorizontal: 5, color: colorMode === "light"?"white":"black" }}>排卵期 </Text>
                     </View>
                 </View>
             </View>

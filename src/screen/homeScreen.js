@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import MyCalendar from "../component/calendar";
 import { Button, StyleSheet, Text, View, Switch, TextInput, ScrollView,Pressable } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSelector } from "react-redux";
+import { selectColorMode } from "../redux/darkModeSlice";
 
-// import { myStyle } from '../darkMode/style';
-// import { useDarkMode } from '../darkMode/DarkModeContext';
+
 
 const HomeScreen = () => {
     const [isEnabled, setIsEnabled] = useState(false);
@@ -14,14 +15,13 @@ const HomeScreen = () => {
     const [flowRating, setFlowRating] = useState(false);
     const [PDRating, setPDRating] = useState(false);
 
-    // const { isDarkModeEnabled, toggleDarkMode } = useDarkMode();
+    // darkMode
+    const colorMode = useSelector(selectColorMode);
+    
     return (
-        <ScrollView style={{ backgroundColor: "white" }}>
-            {/* <View style={ [myStyle.container, isDarkModeEnabled && myStyle.darkModeContainer] }> */}
-            {/* <View style={ myStyle.container }> */}
+        <ScrollView style={{ backgroundColor:colorMode === "light"?"#333333":"white" }}>
             <View>
                 <MyCalendar />
-                {/* <Text>{MyCalendar.dayOfWeekNames}</Text> */}
                 <View style={styles.optionContent}>
                     {/* 月事開始 */}
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
