@@ -1,68 +1,37 @@
 import React, { useState } from "react";
 import MyCalendar from "../component/calendar";
-import { Button, StyleSheet, Text, View, Switch, TextInput, ScrollView, Pressable } from 'react-native';
+import { Button, StyleSheet, Text, View, Switch, TextInput, ScrollView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { myStyle } from '../darkMode/style';
+import { useDarkMode } from '../darkMode/DarkModeContext';
 
 const HomeScreen = () => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-
-    // 流量&疼痛程度rating
-    const [flowRating, setFlowRating] = useState(false);
-    const [PDRating, setPDRating] = useState(false);
-
+    const { isDarkModeEnabled, toggleDarkMode } = useDarkMode();
     return (
         <ScrollView>
-            <View style={{ flex: 1, backgroundColor: "#fff" }}>
+            <View style={ [myStyle.container, isDarkModeEnabled && myStyle.darkModeContainer] }>
                 <MyCalendar />
                 {/* <Text>{MyCalendar.dayOfWeekNames}</Text> */}
                 <View style={styles.optionContent}>
                     {/* 月事開始 */}
-                    <View style={{ flex: 1 }}>
-                        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-                            <View style={{ flexDirection: "row" }}>
-                                <MaterialCommunityIcons name="water-outline" color="black" size={26} />
-                                <Text style={{ fontSize: 18 }}>經期開始</Text>
-                            </View>
-                            <View style={{ justifyContent: "flex-end" }}>
-                                <Switch
-
-                                    trackColor={{ false: '#F2D7C2', true: '#FF5656' }}
-                                    thumbColor={isEnabled ? '#FF5656' : 'white'}
-                                    ios_backgroundColor="white"
-                                    onValueChange={toggleSwitch}
-                                    value={isEnabled}
-                                />
-                            </View>
+                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+                        <View style={{ flexDirection: "row" }}>
+                            <MaterialCommunityIcons name="water-outline" color="black" size={26} />
+                            <Text style={{ fontSize: 18 }}>經期開始</Text>
                         </View>
+                        <View style={{ justifyContent: "flex-end" }}>
+                            <Switch
 
-                        {isEnabled && (<View style={{ marginBottom: 15 }}>
-                            <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: 30, marginVertical: 5 }}>
-                                <Text style={{ fontSize: 16 }}>流量</Text>
-                                <View style={{ flexDirection: "row" }}>
-                                    <View style={{ flexDirection: "row" }}>
-                                        {[1, 2, 3, 4, 5].map((index) => (
-                                            <Pressable key={index} onPress={() => setFlowRating(index)}>
-                                                <MaterialCommunityIcons name="water" color={index <= flowRating ? "black" : "#CCCCCC"} size={26} />
-                                            </Pressable>
-                                        ))}
-                                    </View>
-                                </View>
-                            </View>
-
-                            <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: 30, marginVertical: 5 }}>
-                                <Text style={{ fontSize: 16 }}>疼痛程度</Text>
-                                <View style={{ flexDirection: "row" }}>
-                                    {[1, 2, 3, 4, 5].map((index) => (
-                                        <Pressable key={index} onPress={() => setPDRating(index)}>
-                                            <MaterialCommunityIcons name="lightning-bolt" color={index <= PDRating ? "black" : "#CCCCCC"} size={26} />
-                                        </Pressable>
-                                    ))}
-                                </View>
-                            </View>
-
-                        </View>)}
-
+                                trackColor={{ false: '#F2D7C2', true: '#FF5656' }}
+                                thumbColor={isEnabled ? '#FF5656' : 'white'}
+                                ios_backgroundColor="white"
+                                onValueChange={toggleSwitch}
+                                value={isEnabled}
+                            />
+                        </View>
                     </View>
 
                     {/* 身體狀況 */}
@@ -117,6 +86,7 @@ const styles = StyleSheet.create(
             paddingVertical: 20,
             borderRadius: 20,
             backgroundColor: "#FFF3EA",
+            opacity:0.9
         },
         optionText: {
             flexDirection: "row",
