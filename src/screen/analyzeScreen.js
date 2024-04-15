@@ -79,9 +79,23 @@ const AnalyzeScreen = () => {
                     <View style={{ margin: 30 }}>
                         <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Group%2097.png?raw=true" }} style={{ width: "100%", height: 11 }}></Image>
                     </View>
-                    <View>
-                        {/* <Image source={{uri:}}></Image> */}
+
+                    <View style={[styles.directionRow,{marginHorizontal:30,marginBottom:10}]}>
+                        <View style={[styles.directionRow,{marginRight:15}]}>
+                            <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_analyze/Ellipse%2010.png?raw=true" }} style={{ width: 10, height: 10 }}></Image>
+                            <Text>今日</Text>
+                        </View>
+                        <View style={[styles.directionRow,{marginRight:15}]}>
+                            <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_analyze/Rectangle%2032.png?raw=true" }} style={{ width: 26, height: 9 }}></Image>
+                            <Text>生理期</Text>
+                        </View>
+                        <View style={[styles.directionRow,{marginRight:15}]}>
+                            <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_analyze/Rectangle%2031.png?raw=true" }} style={{ width: 26, height: 9 }}></Image>
+                            <Text>易孕期</Text>
+                        </View>
+                        
                     </View>
+
                 </View>
                 <Pressable onPress={() => navigate('stack科普文章')} style={{ backgroundColor: "#FFD5B8", opacity: 0.9, width: "90%", height: 65, justifyContent: "center", alignItems: "center", borderRadius: 20 }}>
                     <View >
@@ -154,7 +168,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginTop: 20,
         alignItems: "center"
-    }
+    },
+    directionRow: { flexDirection: "row", alignItems: "center" }
 });
 
 export default AnalyzeScreen;
