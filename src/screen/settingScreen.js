@@ -3,9 +3,16 @@ import { StyleSheet } from "react-native";
 import { Switch, Text, View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useDispatch, useSelector } from "react-redux";
+import { selectColorMode, toggleColorMode } from "../redux/darkModeSlice";
+
 
 // import { myStyle } from '../darkMode/style';
 // import { useDarkMode } from '../darkMode/DarkModeContext';
+
+
+//const dispatch = useDispatch();
+
 
 const SettingScreen = () => {
     const { navigate } = useNavigation();
@@ -20,10 +27,17 @@ const SettingScreen = () => {
     const togglePeriodNotification = () => setIsPeriodNotificationEnabled(previousState => !previousState);
     const toggleRecordReminder = () => setIsRecordReminderEnabled(previousState => !previousState);
     const toggleBodyStatusReminder = () => setIsBodyStatusReminderEnabled(previousState => !previousState);
+
+    // darkMode
+    const colorMode = useSelector(selectColorMode);
+    const dispatch = useDispatch();
+    const toggle =()=>{dispatch(toggleColorMode())}
+    
+
     return (
         //         <View style={[myStyle.container, isDarkModeEnabled && myStyle.darkModeContainer]}>
         // <View style={myStyle.container}>
-        <View style={styles.container}>    
+        <View style={styles.container}>
             <View style={styles.settingcontent}>
                 <Text style={styles.title}>經期設定</Text>
                 <View style={styles.listContent}>
@@ -103,6 +117,14 @@ const SettingScreen = () => {
                         <Pressable style={styles.listItem}>
                             <Text>深色模式</Text>
                             <Switch
+                                name="light Mode"
+                                value={colorMode === "light"}
+                                onValueChange={()=>toggle()}
+                                // onToggle={()=>toggle()}
+                                accessibilityLabel="display-mode"
+                                accessibilityHint="light or dark mode"
+                            />
+                            {/* <Switch
                                 //                                 trackColor={{ false: '#F2D7C2', true: '#FF5656' }}
                                 //                                 thumbColor={isDarkModeEnabled ? '#FF5656' : 'white'}
                                 //                                 ios_backgroundColor="white"
@@ -113,7 +135,7 @@ const SettingScreen = () => {
                                 ios_backgroundColor="white"
                                 onValueChange={toggleBodyStatusReminder}
                                 value={isBodyStatusReminderEnabled}
-                            />
+                            /> */}
                         </Pressable>
                     </View>
                     <View>
