@@ -58,22 +58,16 @@ const chartConfig = {
 let day = 21;
 const AnalyzeScreen = () => {
     const { navigate } = useNavigation();
-    // const { isDarkModeEnabled, toggleDarkMode } = useDarkMode();
     return (
-        // <View style={[{alignItems: 'center'},myStyle.container, isDarkModeEnabled && myStyle.darkModeContainer]}>
-        // <View style={[{alignItems: 'center'},myStyle.container]}>
         <ScrollView>
             <View style={{ alignItems: 'center', backgroundColor: "white" }}>
                 <View style={{ width: "100%", paddingHorizontal: "5%" }}>
-                    {/* <Text style={{ fontSize: 14, justifyContent: "flex-start" , color: isDarkModeEnabled ? "white" : "black"}}>距離下次經期：</Text> */}
                     <Text style={{ fontSize: 14, justifyContent: "flex-start", color: "black" }}>距離下次經期：</Text>
                     <View style={{ justifyContent: "center", flexDirection: "row" }}>
                         <Text style={{ fontSize: 40, color: "#FF795C" }}>{day}</Text>
-                        {/* <Text style={{ fontSize: 15, color: "#000000", marginTop: 30 , color: isDarkModeEnabled ? "white" : "black"}}>天</Text> */}
                         <Text style={{ fontSize: 15, color: "#000000", marginTop: 30, color: "black" }}>天</Text>
                     </View>
                     <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                        {/* <Text style={{ fontSize: 12 , color: isDarkModeEnabled ? "white" : "black"}}>2024年5月3日</Text> */}
                         <Text style={{ fontSize: 12, color: "black" }}>2024年5月3日</Text>
                     </View>
                     <View style={{ margin: 30 }}>
