@@ -12,7 +12,7 @@ import SettingScreen from "../screen/settingScreen";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
-import { useDarkMode } from '../darkMode/DarkModeContext';
+// import { useDarkMode } from '../darkMode/DarkModeContext';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -25,14 +25,15 @@ const Navigation = () => {
 };
 
 const BottomTabNavigator = () => {
-  const { isDarkModeEnabled } = useDarkMode();
+  // const { isDarkModeEnabled } = useDarkMode();
   return (
     <KeyboardAvoidingView style={{flex:1}} behavior={"height"} keyboardVerticalOffset={-50}>
     <Tab.Navigator
       initialRouteName="首頁"
       screenOptions={({ route }) => ({
         tabBarStyle: {
-          backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white',
+          // backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white',
+          backgroundColor:'white',
         },
       })}
     >
@@ -41,31 +42,38 @@ const BottomTabNavigator = () => {
         options={{
           title: "分析頁", headerTitleAlign: "center",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="chart-line" color={isDarkModeEnabled ? 'white' : color} size={26} />
+            // <MaterialCommunityIcons name="chart-line" color={isDarkModeEnabled ? 'white' : color} size={26} />
+            <MaterialCommunityIcons name="chart-line" color={color} size={26} />
           ),
           headerBackground: () => (
-            <View style={{ backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white', flex: 1 }} />
+            // <View style={{ backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white', flex: 1 }} />
+            <View style={{ backgroundColor:'white', flex: 1 }} />
           ),
-          headerTintColor: isDarkModeEnabled ? 'white' : 'black'
+          // headerTintColor: isDarkModeEnabled ? 'white' : 'black'
+          headerTintColor:'black'
         }} />
       <Tab.Screen name="首頁"
         component={HomeScreen}
         options={{
           title: "首頁", headerShown: false,
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={isDarkModeEnabled ? 'white' : color} size={26} />
+            // <MaterialCommunityIcons name="home" color={isDarkModeEnabled ? 'white' : color} size={26} />
+            <MaterialCommunityIcons name="home" color={color} size={26} />
           )
         }} />
       <Tab.Screen name="個人頁" component={SettingStack}
         options={{
           title: "個人頁", headerTitleAlign: "center",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account" color={isDarkModeEnabled ? 'white' : color} size={26} />
+            // <MaterialCommunityIcons name="account" color={isDarkModeEnabled ? 'white' : color} size={26} />
+            <MaterialCommunityIcons name="account" color={color} size={26} />
           ),
           headerBackground: () => (
-            <View style={{ backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white', flex: 1 }} />
+            // <View style={{ backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white', flex: 1 }} />
+            <View style={{ backgroundColor:'white', flex: 1 }} />
           ),
-          headerTintColor: isDarkModeEnabled ? 'white' : 'black'
+          // headerTintColor: isDarkModeEnabled ? 'white' : 'black'
+          headerTintColor:'black'
         }} />
     </Tab.Navigator>
     </KeyboardAvoidingView>
@@ -91,36 +99,3 @@ const SettingStack = () => {
 };
 
 export default Navigation;
-
-// screenOptions={}
-// tabBarOptions={{
-//     showLabel:true,
-//     labelStyle:{fontSize:8,fontWeight:500,marginTop:5},
-//     showIcon:true,
-// }}
-// ({ route }) => ({
-//     tabBarIcon: ({ focused, size }) => {
-//         if (route.name === "首頁") {
-//             iconName = 'Icon_home';
-//         }
-//         else if (route.name === "分析頁") {
-//             iconName = "Icon_analyze"
-//         }
-//         else if (route.name === "個人頁") {
-//             iconName = "Icon_setting"
-//         }
-
-//         return (
-//             <View style={{ width: "100%" }}>
-//                 <Image
-//                     source={{ uri: `https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_Tab/${iconName}-active.png?raw=true` }}
-//                     style={{ width: 40, height: 40, marginTop: 12,marginHorizontal:12}}
-//                 />
-//             </View>
-//         )
-//     },
-//     tabBarStyle:{width:"100%",height:50},
-//     tabBarShowLabel: true,
-//     tabBarLabelStyle: { fontSize: 8, fontWeight: 500, marginTop: 5 },
-//     headerShown: true,
-// })

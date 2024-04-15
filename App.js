@@ -4,14 +4,18 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 import Navigation from './src/navigation/index';
 
-import { DarkModeProvider } from './src/darkMode/DarkModeContext';
+// import { Provider } from 'react-redux';
+// import { DarkModeProvider } from './src/darkMode/DarkModeContext';
+
 export default function App() {
   return (
-    <DarkModeProvider>
-      <SafeAreaView style={styles.container}>
-        <Navigation />
-      </SafeAreaView>
-    </DarkModeProvider>
+    // <DarkModeProvider>
+
+    <SafeAreaView style={styles.container}>
+      <Navigation />
+    </SafeAreaView>
+
+    // </DarkModeProvider>
   );
 }
 

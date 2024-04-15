@@ -3,16 +3,18 @@ import MyCalendar from "../component/calendar";
 import { Button, StyleSheet, Text, View, Switch, TextInput, ScrollView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { myStyle } from '../darkMode/style';
-import { useDarkMode } from '../darkMode/DarkModeContext';
+// import { myStyle } from '../darkMode/style';
+// import { useDarkMode } from '../darkMode/DarkModeContext';
 
 const HomeScreen = () => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-    const { isDarkModeEnabled, toggleDarkMode } = useDarkMode();
+    // const { isDarkModeEnabled, toggleDarkMode } = useDarkMode();
     return (
         <ScrollView>
-            <View style={ [myStyle.container, isDarkModeEnabled && myStyle.darkModeContainer] }>
+            {/* <View style={ [myStyle.container, isDarkModeEnabled && myStyle.darkModeContainer] }> */}
+            {/* <View style={ myStyle.container }> */}
+            <View>
                 <MyCalendar />
                 {/* <Text>{MyCalendar.dayOfWeekNames}</Text> */}
                 <View style={styles.optionContent}>
