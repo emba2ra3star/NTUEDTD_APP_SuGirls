@@ -46,9 +46,9 @@ export default function MyCalendar() {
                         // '2024-03-27': { marked: true },
                         // '2024-03-28': { disabled: true }
 
-                        '2024-03-24': { startingDay: true, color: 'green' },
-                        '2024-03-27': { selected: true, endingDay: true, color: 'green', textColor: 'gray' },
-                        '2024-03-30': { disabled: true, startingDay: true, color: 'green', endingDay: true }
+                        '2024-03-24': { startingDay: true, color: '#FFC197' },
+                        '2024-03-27': { selected: true, endingDay: true, color: '#FFC197', textColor: 'gray' },
+                        '2024-03-30': { disabled: true, startingDay: true, color: '#EE7B7B', endingDay: true }
 
                     }}
                     theme={{

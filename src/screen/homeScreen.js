@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import MyCalendar from "../component/calendar";
-import { Button, StyleSheet, Text, View, Switch, TextInput, ScrollView } from 'react-native';
+import { Button, StyleSheet, Text, View, Switch, TextInput, ScrollView,Pressable } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // import { myStyle } from '../darkMode/style';
@@ -9,9 +9,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 const HomeScreen = () => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+    // 流量&疼痛程度rating
+    const [flowRating, setFlowRating] = useState(false);
+    const [PDRating, setPDRating] = useState(false);
+
     // const { isDarkModeEnabled, toggleDarkMode } = useDarkMode();
     return (
-        <ScrollView>
+        <ScrollView style={{ backgroundColor: "white" }}>
             {/* <View style={ [myStyle.container, isDarkModeEnabled && myStyle.darkModeContainer] }> */}
             {/* <View style={ myStyle.container }> */}
             <View>
@@ -34,7 +39,34 @@ const HomeScreen = () => {
                                 value={isEnabled}
                             />
                         </View>
+
                     </View>
+                        {isEnabled && (<View style={{ marginBottom: 15 }}>
+                            <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: 30, marginVertical: 5 }}>
+                                <Text style={{ fontSize: 16 }}>流量</Text>
+                                <View style={{ flexDirection: "row" }}>
+                                    <View style={{ flexDirection: "row" }}>
+                                        {[1, 2, 3, 4, 5].map((index) => (
+                                            <Pressable key={index} onPress={() => setFlowRating(index)}>
+                                                <MaterialCommunityIcons name="water" color={index <= flowRating ? "black" : "#CCCCCC"} size={26} />
+                                            </Pressable>
+                                        ))}
+                                    </View>
+                                </View>
+                            </View>
+
+                            <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: 30, marginVertical: 5 }}>
+                                <Text style={{ fontSize: 16 }}>疼痛程度</Text>
+                                <View style={{ flexDirection: "row" }}>
+                                    {[1, 2, 3, 4, 5].map((index) => (
+                                        <Pressable key={index} onPress={() => setPDRating(index)}>
+                                            <MaterialCommunityIcons name="lightning-bolt" color={index <= PDRating ? "black" : "#CCCCCC"} size={26} />
+                                        </Pressable>
+                                    ))}
+                                </View>
+                            </View>
+
+                        </View>)}
 
                     {/* 身體狀況 */}
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
@@ -88,7 +120,7 @@ const styles = StyleSheet.create(
             paddingVertical: 20,
             borderRadius: 20,
             backgroundColor: "#FFF3EA",
-            opacity:0.9
+            opacity: 0.9
         },
         optionText: {
             flexDirection: "row",
