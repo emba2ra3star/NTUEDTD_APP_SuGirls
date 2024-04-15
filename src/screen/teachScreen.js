@@ -87,7 +87,7 @@ const styles = StyleSheet.create(
     {
         Direction_row: { flexDirection: "row",alignItems:"flex-start", flex:1,justifyItems:"center"},
         marginTop_10: { marginTop: 10 },
-        directions_text:{ width:"50%",flexWrap: "wrap"},
+        directions_text:{ width:170,flexWrap: "wrap",lineHeight:30},
         directions_img:{ width: "50%", aspectRatio: 1, marginRight: 10, marginVertical: -20 }
     }
 );
