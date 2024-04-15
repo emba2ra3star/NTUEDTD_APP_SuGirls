@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, View, Image, StyleSheet, Text } from 'react-native';
+import { Pressable, View, Image, StyleSheet, Text, ScrollView } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import {
     LineChart,
@@ -62,69 +62,73 @@ const AnalyzeScreen = () => {
     return (
         // <View style={[{alignItems: 'center'},myStyle.container, isDarkModeEnabled && myStyle.darkModeContainer]}>
         // <View style={[{alignItems: 'center'},myStyle.container]}>
-        <View style={{ alignItems: 'center', backgroundColor: "white" }}>
-            <View style={{ width: "100%", paddingHorizontal: "5%" }}>
-                {/* <Text style={{ fontSize: 14, justifyContent: "flex-start" , color: isDarkModeEnabled ? "white" : "black"}}>距離下次經期：</Text> */}
-                <Text style={{ fontSize: 14, justifyContent: "flex-start", color: "black" }}>距離下次經期：</Text>
-                <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                    <Text style={{ fontSize: 40, color: "#FF795C" }}>{day}</Text>
-                    {/* <Text style={{ fontSize: 15, color: "#000000", marginTop: 30 , color: isDarkModeEnabled ? "white" : "black"}}>天</Text> */}
-                    <Text style={{ fontSize: 15, color: "#000000", marginTop: 30, color: "black" }}>天</Text>
+        <ScrollView>
+            <View style={{ alignItems: 'center', backgroundColor: "white" }}>
+                <View style={{ width: "100%", paddingHorizontal: "5%" }}>
+                    {/* <Text style={{ fontSize: 14, justifyContent: "flex-start" , color: isDarkModeEnabled ? "white" : "black"}}>距離下次經期：</Text> */}
+                    <Text style={{ fontSize: 14, justifyContent: "flex-start", color: "black" }}>距離下次經期：</Text>
+                    <View style={{ justifyContent: "center", flexDirection: "row" }}>
+                        <Text style={{ fontSize: 40, color: "#FF795C" }}>{day}</Text>
+                        {/* <Text style={{ fontSize: 15, color: "#000000", marginTop: 30 , color: isDarkModeEnabled ? "white" : "black"}}>天</Text> */}
+                        <Text style={{ fontSize: 15, color: "#000000", marginTop: 30, color: "black" }}>天</Text>
+                    </View>
+                    <View style={{ justifyContent: "center", flexDirection: "row" }}>
+                        {/* <Text style={{ fontSize: 12 , color: isDarkModeEnabled ? "white" : "black"}}>2024年5月3日</Text> */}
+                        <Text style={{ fontSize: 12, color: "black" }}>2024年5月3日</Text>
+                    </View>
+                    <View style={{ margin: 30 }}>
+                        <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Group%2097.png?raw=true" }} style={{ width: "100%", height: 11 }}></Image>
+                    </View>
+                    <View>
+                        {/* <Image source={{uri:}}></Image> */}
+                    </View>
                 </View>
-                <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                    {/* <Text style={{ fontSize: 12 , color: isDarkModeEnabled ? "white" : "black"}}>2024年5月3日</Text> */}
-                    <Text style={{ fontSize: 12, color: "black" }}>2024年5月3日</Text>
+                <Pressable onPress={() => navigate('stack科普文章')} style={{ backgroundColor: "#FFD5B8", opacity: 0.9, width: "90%", height: 65, justifyContent: "center", alignItems: "center", borderRadius: 20 }}>
+                    <View >
+                        <Text>
+                            Article
+                        </Text>
+                    </View>
+                </Pressable>
+                <View style={styles.container}>
+                    <Text style={styles.charttitle}>週期長度</Text>
+
+                    <BarChart
+                        style={graphStyle}
+                        data={Cycledata}
+                        width={screenWidth}
+                        height={165}
+                        yAxisLabel=""
+                        withHorizontalLabels={false}
+                        chartConfig={chartConfig}
+                        fromZero
+                        segments={4}
+                        fromNumber={40}
+                        withInnerLines={false}
+                        showValuesOnTopOfBars={true}
+                        showBarTops={false}
+                    />
                 </View>
-                <View style={{margin:30}}>
-                    <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Group%2097.png?raw=true" }} style={{ width: "100%",height:11 }}></Image>
+                <View style={styles.container}>
+                    <Text style={styles.charttitle}>經期長度</Text>
+
+                    <LineChart
+                        style={LinegraphStyle}
+                        data={Perioddata}
+                        width={screenWidth}
+                        height={165}
+                        yAxisLabel=""
+                        withHorizontalLabels={false}
+                        chartConfig={chartConfig}
+                        fromZero
+                        segments={4}
+                        fromNumber={20}
+                        withInnerLines={false}
+                        showValuesOnTopOfBars={true}
+                    />
                 </View>
             </View>
-            <Pressable onPress={() => navigate('stack科普文章')} style={{ backgroundColor: "#FFD5B8", opacity: 0.9, width: "90%", height: 65, justifyContent: "center", alignItems: "center", borderRadius: 20 }}>
-                <View >
-                    <Text>
-                        Article
-                    </Text>
-                </View>
-            </Pressable>
-            <View style={styles.container}>
-                <Text style={styles.charttitle}>週期長度</Text>
-
-                <BarChart
-                    style={graphStyle}
-                    data={Cycledata}
-                    width={screenWidth}
-                    height={165}
-                    yAxisLabel=""
-                    withHorizontalLabels={false}
-                    chartConfig={chartConfig}
-                    fromZero
-                    segments={4}
-                    fromNumber={40}
-                    withInnerLines={false}
-                    showValuesOnTopOfBars={true}
-                    showBarTops={false}
-                />
-            </View>
-            <View style={styles.container}>
-                <Text style={styles.charttitle}>經期長度</Text>
-
-                <LineChart
-                    style={LinegraphStyle}
-                    data={Perioddata}
-                    width={screenWidth}
-                    height={165}
-                    yAxisLabel=""
-                    withHorizontalLabels={false}
-                    chartConfig={chartConfig}
-                    fromZero
-                    segments={4}
-                    fromNumber={20}
-                    withInnerLines={false}
-                    showValuesOnTopOfBars={true}
-                />
-            </View>
-        </View>
-
+        </ScrollView>
     )
 };
 const styles = StyleSheet.create({

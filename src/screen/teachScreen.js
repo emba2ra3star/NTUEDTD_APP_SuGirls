@@ -65,7 +65,7 @@ const TeachScreen=()=>{
                         {/* <Text style={{color: isDarkModeEnabled ? "white" : "black"}}>紀錄通知：</Text>
                         <Text style={[styles.directions_text,{color: isDarkModeEnabled ? "white" : "black"}]}>定時提醒使用者打開APP記錄身體狀況。</Text> */}
                         <Text style={{color:"black"}}>紀錄通知：</Text>
-                        <Text style={[styles.directions_text,{color:"black"}]}>定時提醒使用者打開APP記錄身體狀況。</Text>
+                        <Text style={[styles.directions_text,{color:"black"}]} numberOfLines={5}>定時提醒使用者打開APP記錄身體狀況。</Text>
                     </View>
                 </View>
 
