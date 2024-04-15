@@ -80,7 +80,7 @@ const AnalyzeStack = () => {
         headerBackground: () => (
           <View style={{ backgroundColor:colorMode === "light"?"#333333":"white", flex: 1 }} />
         ),
-        headerTintColor: colorMode ? 'white' : 'black'
+        headerTintColor: colorMode === "light" ? 'white' : 'black'
       }} />
       <Stack.Screen name="stack科普文章" component={ArticleScreen} options={{
         headerShown: true,
@@ -89,7 +89,7 @@ const AnalyzeStack = () => {
         headerBackground: () => (
           <View style={{ backgroundColor:colorMode === "light"?"#333333":"white", flex: 1 }} />
         ),
-        headerTintColor: colorMode ? 'white' : 'black'
+        headerTintColor: colorMode === "light" ? 'white' : 'black'
       }} />
     </Stack.Navigator>
   )
@@ -106,7 +106,7 @@ const SettingStack = () => {
         headerBackground: () => (
           <View style={{ backgroundColor:colorMode === "light"?"#333333":"white", flex: 1 }} />
         ),
-        headerTintColor: colorMode ? 'white' : 'black'
+        headerTintColor: colorMode === "light" ? 'white' : 'black'
       }} />
       <Stack.Screen name="stack使用教學" component={TeachScreen} options={{
         headerShown: true,
@@ -115,7 +115,7 @@ const SettingStack = () => {
         headerBackground: () => (
           <View style={{ backgroundColor:colorMode === "light"?"#333333":"white", flex: 1 }} />
         ),
-        headerTintColor: colorMode ? 'white' : 'black'
+        headerTintColor: colorMode === "light" ? 'white' : 'black'
       }} />
     </Stack.Navigator>
   )

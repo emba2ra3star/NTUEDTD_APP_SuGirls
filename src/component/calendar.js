@@ -44,11 +44,11 @@ export default function MyCalendar() {
                     }}
                     theme={{
                         //backgroundImage: "https://raw.githubusercontent.com/emba2ra3star/NTUEDTD_APP_SuGirls/main/assets/Group%2098.png",
-                        textSectionTitleColor: '#b6c1cd', // 顶部月份文字颜色
+                        textSectionTitleColor: 'white', // 顶部月份文字颜色
                         textMonthFontWeight: 'bold', // 月份文字的粗细
                         textMonthFontSize: 20, // 月份文字的大小
                         todayTextColor: '#00adf5', // 当天文字颜色
-                        calendarBackground: 'rgba(255,255,255,0.3)',
+                        calendarBackground: 'rgba(255,255,255,0.2)',
                         dayTextColor: 'black'
                     }}
 
