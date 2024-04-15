@@ -10,6 +10,8 @@ import {
     StackedBarChart
 } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
+import { useSelector } from 'react-redux';
+import { selectColorMode } from "../redux/darkModeSlice";
 
 // import { myStyle } from '../darkMode/style';
 // import { useDarkMode } from '../darkMode/DarkModeContext';
@@ -58,17 +60,19 @@ const chartConfig = {
 let day = 21;
 const AnalyzeScreen = () => {
     const { navigate } = useNavigation();
+    const colorMode = useSelector(selectColorMode);
+
     return (
         <ScrollView>
-            <View style={{ alignItems: 'center', backgroundColor: "white" }}>
+            <View style={{ alignItems: 'center', backgroundColor:colorMode === "light"?"#333333":"white"}}>
                 <View style={{ width: "100%", paddingHorizontal: "5%" }}>
-                    <Text style={{ fontSize: 14, justifyContent: "flex-start", color: "black" }}>距離下次經期：</Text>
+                    <Text style={{ fontSize: 14, justifyContent: "flex-start", color: colorMode === "light"?"white":"black" }}>距離下次經期：</Text>
                     <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                        <Text style={{ fontSize: 40, color: "#FF795C" }}>{day}</Text>
-                        <Text style={{ fontSize: 15, color: "#000000", marginTop: 30, color: "black" }}>天</Text>
+                        <Text style={{ fontSize: 40, color: colorMode === "light"?"#ff795c":"black" }}>{day}</Text>
+                        <Text style={{ fontSize: 15, color: "#000000", marginTop: 30, color: colorMode === "light"?"white":"black" }}>天</Text>
                     </View>
                     <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                        <Text style={{ fontSize: 12, color: "black" }}>2024年5月3日</Text>
+                        <Text style={{ fontSize: 12, color: colorMode === "light"?"white":"black" }}>2024年5月3日</Text>
                     </View>
                     <View style={{ margin: 30 }}>
                         <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Group%2097.png?raw=true" }} style={{ width: "100%", height: 11 }}></Image>
@@ -77,15 +81,15 @@ const AnalyzeScreen = () => {
                     <View style={[styles.directionRow,{marginHorizontal:30,marginBottom:10}]}>
                         <View style={[styles.directionRow,{marginRight:15}]}>
                             <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_analyze/Ellipse%2010.png?raw=true" }} style={{ width: 10, height: 10 }}></Image>
-                            <Text>今日</Text>
+                            <Text style={{color: colorMode === "light"?"white":"black"}}>今日</Text>
                         </View>
                         <View style={[styles.directionRow,{marginRight:15}]}>
                             <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_analyze/Rectangle%2032.png?raw=true" }} style={{ width: 26, height: 9 }}></Image>
-                            <Text>生理期</Text>
+                            <Text style={{color: colorMode === "light"?"white":"black"}}>生理期</Text>
                         </View>
                         <View style={[styles.directionRow,{marginRight:15}]}>
                             <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_analyze/Rectangle%2031.png?raw=true" }} style={{ width: 26, height: 9 }}></Image>
-                            <Text>易孕期</Text>
+                            <Text style={{color: colorMode === "light"?"white":"black"}}>易孕期</Text>
                         </View>
                         
                     </View>
