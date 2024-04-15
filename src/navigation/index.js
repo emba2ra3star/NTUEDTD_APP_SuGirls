@@ -10,9 +10,9 @@ import HomeScreen from "../screen/homeScreen";
 import AnalyzeScreen from "../screen/analyzeScreen";
 import SettingScreen from "../screen/settingScreen";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSelector } from "react-redux";
+import { selectColorMode } from "../redux/darkModeSlice";
 
-
-// import { useDarkMode } from '../darkMode/DarkModeContext';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -25,15 +25,14 @@ const Navigation = () => {
 };
 
 const BottomTabNavigator = () => {
-  // const { isDarkModeEnabled } = useDarkMode();
+  const colorMode = useSelector(selectColorMode);
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={"height"} keyboardVerticalOffset={-50}>
       <Tab.Navigator
         initialRouteName="首頁"
         screenOptions={({ route }) => ({
           tabBarStyle: {
-            // backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white',
-            backgroundColor: 'white',
+            backgroundColor:colorMode === "light"?"#333333":"white",
           },
         })}
       >
@@ -42,7 +41,6 @@ const BottomTabNavigator = () => {
           options={{
             title: "分析頁",
             tabBarIcon: ({ color }) => (
-              // <MaterialCommunityIcons name="chart-line" color={isDarkModeEnabled ? 'white' : color} size={26} />
               <MaterialCommunityIcons name="chart-line" color={color} size={26} />
             ),
             headerShown: false,
@@ -72,6 +70,7 @@ const BottomTabNavigator = () => {
 };
 
 const AnalyzeStack = () => {
+  const colorMode = useSelector(selectColorMode);
   return (
     <Stack.Navigator initialRouteName="stack分析頁">
       <Stack.Screen name="stack分析頁" component={AnalyzeScreen} options={{
@@ -79,28 +78,25 @@ const AnalyzeStack = () => {
         title: "分析頁",
         headerTitleAlign: "center",
         headerBackground: () => (
-          // <View style={{ backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white', flex: 1 }} />
-          <View style={{ backgroundColor: 'white', flex: 1 }} />
+          <View style={{ backgroundColor:colorMode === "light"?"#333333":"white", flex: 1 }} />
         ),
-        // headerTintColor: isDarkModeEnabled ? 'white' : 'black'
-        headerTintColor: 'black'
+        headerTintColor: colorMode ? 'white' : 'black'
       }} />
       <Stack.Screen name="stack科普文章" component={ArticleScreen} options={{
         headerShown: true,
         title: "經期小知識",
         headerTitleAlign: "center",
         headerBackground: () => (
-          // <View style={{ backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white', flex: 1 }} />
-          <View style={{ backgroundColor: 'white', flex: 1 }} />
+          <View style={{ backgroundColor:colorMode === "light"?"#333333":"white", flex: 1 }} />
         ),
-        // headerTintColor: isDarkModeEnabled ? 'white' : 'black'
-        headerTintColor: 'black'
+        headerTintColor: colorMode ? 'white' : 'black'
       }} />
     </Stack.Navigator>
   )
 };
 
 const SettingStack = () => {
+  const colorMode = useSelector(selectColorMode);
   return (
     <Stack.Navigator initialRouteName="stack個人頁">
       <Stack.Screen name="stack個人頁" component={SettingScreen} options={{
@@ -108,22 +104,18 @@ const SettingStack = () => {
         title: "個人頁",
         headerTitleAlign: "center",
         headerBackground: () => (
-          // <View style={{ backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white', flex: 1 }} />
-          <View style={{ backgroundColor: 'white', flex: 1 }} />
+          <View style={{ backgroundColor:colorMode === "light"?"#333333":"white", flex: 1 }} />
         ),
-        // headerTintColor: isDarkModeEnabled ? 'white' : 'black'
-        headerTintColor: 'black'
+        headerTintColor: colorMode ? 'white' : 'black'
       }} />
       <Stack.Screen name="stack使用教學" component={TeachScreen} options={{
         headerShown: true,
         title: "使用教學",
         headerTitleAlign: "center",
         headerBackground: () => (
-          // <View style={{ backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white', flex: 1 }} />
-          <View style={{ backgroundColor: 'white', flex: 1 }} />
+          <View style={{ backgroundColor:colorMode === "light"?"#333333":"white", flex: 1 }} />
         ),
-        // headerTintColor: isDarkModeEnabled ? 'white' : 'black'
-        headerTintColor: 'black'
+        headerTintColor: colorMode ? 'white' : 'black'
       }} />
     </Stack.Navigator>
   )
