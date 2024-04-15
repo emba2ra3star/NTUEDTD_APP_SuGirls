@@ -13,8 +13,6 @@ import { Dimensions } from "react-native";
 import { useSelector } from 'react-redux';
 import { selectColorMode } from "../redux/darkModeSlice";
 
-// import { myStyle } from '../darkMode/style';
-// import { useDarkMode } from '../darkMode/DarkModeContext';
 
 const screenWidth = Dimensions.get('window').width;
 const Cycledata = {
