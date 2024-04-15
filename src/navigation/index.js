@@ -27,55 +27,46 @@ const Navigation = () => {
 const BottomTabNavigator = () => {
   // const { isDarkModeEnabled } = useDarkMode();
   return (
-    <KeyboardAvoidingView style={{flex:1}} behavior={"height"} keyboardVerticalOffset={-50}>
-    <Tab.Navigator
-      initialRouteName="首頁"
-      screenOptions={({ route }) => ({
-        tabBarStyle: {
-          // backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white',
-          backgroundColor:'white',
-        },
-      })}
-    >
-      <Tab.Screen name="分析頁"
-        component={AnalyzeStack}
-        options={{
-          title: "分析頁", headerTitleAlign: "center",
-          tabBarIcon: ({ color }) => (
-            // <MaterialCommunityIcons name="chart-line" color={isDarkModeEnabled ? 'white' : color} size={26} />
-            <MaterialCommunityIcons name="chart-line" color={color} size={26} />
-          ),
-          headerBackground: () => (
-            // <View style={{ backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white', flex: 1 }} />
-            <View style={{ backgroundColor:'white', flex: 1 }} />
-          ),
-          // headerTintColor: isDarkModeEnabled ? 'white' : 'black'
-          headerTintColor:'black'
-        }} />
-      <Tab.Screen name="首頁"
-        component={HomeScreen}
-        options={{
-          title: "首頁", headerShown: false,
-          tabBarIcon: ({ color }) => (
-            // <MaterialCommunityIcons name="home" color={isDarkModeEnabled ? 'white' : color} size={26} />
-            <MaterialCommunityIcons name="home" color={color} size={26} />
-          )
-        }} />
-      <Tab.Screen name="個人頁" component={SettingStack}
-        options={{
-          title: "個人頁", headerTitleAlign: "center",
-          tabBarIcon: ({ color }) => (
-            // <MaterialCommunityIcons name="account" color={isDarkModeEnabled ? 'white' : color} size={26} />
-            <MaterialCommunityIcons name="account" color={color} size={26} />
-          ),
-          headerBackground: () => (
-            // <View style={{ backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white', flex: 1 }} />
-            <View style={{ backgroundColor:'white', flex: 1 }} />
-          ),
-          // headerTintColor: isDarkModeEnabled ? 'white' : 'black'
-          headerTintColor:'black'
-        }} />
-    </Tab.Navigator>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={"height"} keyboardVerticalOffset={-50}>
+      <Tab.Navigator
+        initialRouteName="首頁"
+        screenOptions={({ route }) => ({
+          tabBarStyle: {
+            // backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white',
+            backgroundColor: 'white',
+          },
+        })}
+      >
+        <Tab.Screen name="分析頁"
+          component={AnalyzeStack}
+          options={{
+            title: "分析頁",
+            tabBarIcon: ({ color }) => (
+              // <MaterialCommunityIcons name="chart-line" color={isDarkModeEnabled ? 'white' : color} size={26} />
+              <MaterialCommunityIcons name="chart-line" color={color} size={26} />
+            ),
+            headerShown: false,
+
+          }} />
+        <Tab.Screen name="首頁"
+          component={HomeScreen}
+          options={{
+            title: "首頁", headerShown: false,
+            tabBarIcon: ({ color }) => (
+              // <MaterialCommunityIcons name="home" color={isDarkModeEnabled ? 'white' : color} size={26} />
+              <MaterialCommunityIcons name="home" color={color} size={26} />
+            )
+          }} />
+        <Tab.Screen name="個人頁" component={SettingStack}
+          options={{
+            title: "個人頁",
+            headerShown: false,
+            tabBarIcon: ({ color }) => (
+              // <MaterialCommunityIcons name="account" color={isDarkModeEnabled ? 'white' : color} size={26} />
+              <MaterialCommunityIcons name="account" color={color} size={26} />
+            ),
+          }} />
+      </Tab.Navigator>
     </KeyboardAvoidingView>
   )
 };
@@ -83,8 +74,28 @@ const BottomTabNavigator = () => {
 const AnalyzeStack = () => {
   return (
     <Stack.Navigator initialRouteName="stack分析頁">
-      <Stack.Screen name="stack分析頁" component={AnalyzeScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="stack科普文章" component={ArticleScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="stack分析頁" component={AnalyzeScreen} options={{
+        headerShown: true,
+        title: "分析頁",
+        headerTitleAlign: "center",
+        headerBackground: () => (
+          // <View style={{ backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white', flex: 1 }} />
+          <View style={{ backgroundColor: 'white', flex: 1 }} />
+        ),
+        // headerTintColor: isDarkModeEnabled ? 'white' : 'black'
+        headerTintColor: 'black'
+      }} />
+      <Stack.Screen name="stack科普文章" component={ArticleScreen} options={{
+        headerShown: true,
+        title: "經期小知識",
+        headerTitleAlign: "center",
+        headerBackground: () => (
+          // <View style={{ backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white', flex: 1 }} />
+          <View style={{ backgroundColor: 'white', flex: 1 }} />
+        ),
+        // headerTintColor: isDarkModeEnabled ? 'white' : 'black'
+        headerTintColor: 'black'
+      }} />
     </Stack.Navigator>
   )
 };
@@ -92,8 +103,28 @@ const AnalyzeStack = () => {
 const SettingStack = () => {
   return (
     <Stack.Navigator initialRouteName="stack個人頁">
-      <Stack.Screen name="stack個人頁" component={SettingScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="stack使用教學" component={TeachScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="stack個人頁" component={SettingScreen} options={{
+        headerShown: true,
+        title: "個人頁",
+        headerTitleAlign: "center",
+        headerBackground: () => (
+          // <View style={{ backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white', flex: 1 }} />
+          <View style={{ backgroundColor: 'white', flex: 1 }} />
+        ),
+        // headerTintColor: isDarkModeEnabled ? 'white' : 'black'
+        headerTintColor: 'black'
+      }} />
+      <Stack.Screen name="stack使用教學" component={TeachScreen} options={{
+        headerShown: true,
+        title: "使用教學",
+        headerTitleAlign: "center",
+        headerBackground: () => (
+          // <View style={{ backgroundColor: isDarkModeEnabled ? 'rgba(34,36,40,1)' : 'white', flex: 1 }} />
+          <View style={{ backgroundColor: 'white', flex: 1 }} />
+        ),
+        // headerTintColor: isDarkModeEnabled ? 'white' : 'black'
+        headerTintColor: 'black'
+      }} />
     </Stack.Navigator>
   )
 };
