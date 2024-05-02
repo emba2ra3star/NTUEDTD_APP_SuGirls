@@ -4,6 +4,7 @@ import { Button, StyleSheet, Text, View, Switch, TextInput, ScrollView,Pressable
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSelector } from "react-redux";
 import { selectColorMode } from "../redux/darkModeSlice";
+import MyComponent from "../component/UserList";
 
 
 
@@ -22,6 +23,7 @@ const HomeScreen = () => {
         <ScrollView style={{ backgroundColor:colorMode === "light"?"#333333":"white" }}>
             <View>
                 <MyCalendar />
+                {/* <MyComponent /> */}
                 <View style={styles.optionContent}>
                     {/* 月事開始 */}
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
