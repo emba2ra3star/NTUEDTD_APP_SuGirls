@@ -22,7 +22,7 @@ const HomeScreen = () => {
     return (
         <ScrollView style={{ backgroundColor:colorMode === "light"?"#333333":"white" }}>
             <View>
-                <MyCalendar />
+                <MyCalendar periodIsEnable={isEnabled}/>
                 {/* <MyComponent /> */}
                 <View style={styles.optionContent}>
                     {/* 月事開始 */}
@@ -43,7 +43,7 @@ const HomeScreen = () => {
                         </View>
 
                     </View>
-                        {isEnabled && (<View style={{ marginBottom: 15 }}>
+                        {isEnabled &&(<View style={{ marginBottom: 15 }}>
                             <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: 30, marginVertical: 5 }}>
                                 <Text style={{ fontSize: 16 }}>流量</Text>
                                 <View style={{ flexDirection: "row" }}>
