@@ -1,27 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { useSelector } from 'react-redux';
 import { selectColorMode } from '../redux/darkModeSlice';
+import { tr } from 'react-native-paper-dates';
 
 
-export default function MyCalendar() {    
+export default function MyCalendar() {
     // darkMode
     const colorMode = useSelector(selectColorMode);
+
+    // markday
+    const [markedDates, setMarkedDates] = useState({});
+    const handleDayPress = (day) => {
+        const { dateString } = day;
+        // 清除updateDay
+        const updatedMarkedDates = {}
+        // 設定updateDay
+        updatedMarkedDates[dateString] = { startingDay: true, endingDay: true, color: '#EE7B7B' },
+        // 渲染
+        setMarkedDates(updatedMarkedDates);
+    };
+    // const [startDate, setStartDate] = useState(null); // 儲存開始日期
+    // const [endDate, setEndDate] = useState(null); // 儲存結束日期
+    // const onConfirm = (selectedDates) => {
+    //     setStartDate(selectedDates[0]);
+    //     setEndDate(selectedDates[1]);
+    // };
+
+
+
     return (
         <View style={{ width: "100%", marginTop: 5 }}>
             <View style={{ flexDirection: "row", marginLeft: "2%" }}>
                 <Image source={require('../../assets/img/Vector.png')} />
-                <Text style={{ paddingLeft: 5,color: colorMode === "light"?"white":"black" }}>2024</Text>
+                <Text style={{ paddingLeft: 5, color: colorMode === "light" ? "white" : "black" }}>2024</Text>
             </View>
 
             <View style={{ flexDirection: "row", justifyContent: "space-around", paddingVertical: 8, borderBottomWidth: 3, borderBottomColor: '#ffd5b8' }}>
                 <Text style={{ color: "#ffb673" }}>日</Text>
-                <Text style={{ color: colorMode === "light"?"white":"black" }}>一</Text>
-                <Text style={{ color: colorMode === "light"?"white":"black" }}>二</Text>
-                <Text style={{ color: colorMode === "light"?"white":"black" }}>三</Text>
-                <Text style={{ color: colorMode === "light"?"white":"black" }}>四</Text>
-                <Text style={{ color: colorMode === "light"?"white":"black" }}>五</Text>
+                <Text style={{ color: colorMode === "light" ? "white" : "black" }}>一</Text>
+                <Text style={{ color: colorMode === "light" ? "white" : "black" }}>二</Text>
+                <Text style={{ color: colorMode === "light" ? "white" : "black" }}>三</Text>
+                <Text style={{ color: colorMode === "light" ? "white" : "black" }}>四</Text>
+                <Text style={{ color: colorMode === "light" ? "white" : "black" }}>五</Text>
                 <Text style={{ color: "#ffb673" }}>六</Text>
             </View>
 
@@ -30,17 +52,17 @@ export default function MyCalendar() {
                     current={'2024-03-20'} // 初始显示的日期
                     minDate={'2024-01-01'} // 允许选择的最早日期
                     maxDate={'2024-12-31'} // 允许选择的最晚日期
-                    onDayPress={(day) => { console.log('selected day', day) }} // 选择日期时触发的回调
+                    onDayPress={(day) => {
+                        // console.log('selected day', day)
+                        handleDayPress(day)
+                    }} // 选择日期时触发的回调
                     markingType="period"
                     markedDates={{
-                        // '2024-03-26': { selected: true, marked: true, selectedColor: '#EE7B7B' }, // 标记特定日期
-                        // '2024-03-27': { marked: true },
-                        // '2024-03-28': { disabled: true }
-
+                        ...markedDates,
+                        '2024-03-26': { selected: true, marked: true, selectedColor: '#EE7B7B' }, // 标记特定日期
+                        '2024-03-28': { disabled: true },
                         '2024-03-24': { startingDay: true, color: '#FFC197' },
-                        '2024-03-27': { selected: true, endingDay: true, color: '#FFC197', textColor: 'gray' },
-                        '2024-03-30': { disabled: true, startingDay: true, color: '#EE7B7B', endingDay: true }
-
+                        '2024-03-27': { marked: true },
                     }}
                     theme={{
                         //backgroundImage: "https://raw.githubusercontent.com/emba2ra3star/NTUEDTD_APP_SuGirls/main/assets/Group%2098.png",
@@ -54,30 +76,28 @@ export default function MyCalendar() {
 
                     hideExtraDays={true}
                     hideDayNames={true}
-                    style={styles.calendar}
-                // renderHeader={}???
                 />
 
                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 5 }}>
                     <View style={styles.calendarView}>
                         <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_period.png?raw=true" }} style={styles.calendarIcon} />
-                        <Text style={{ marginHorizontal: 5, color: colorMode === "light"?"white":"black" }}>經期</Text>
+                        <Text style={{ marginHorizontal: 5, color: colorMode === "light" ? "white" : "black" }}>經期</Text>
                     </View>
                     <View style={styles.calendarView}>
                         <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_today.png?raw=true" }} style={styles.calendarIcon} />
-                        <Text style={{ marginHorizontal: 5, color: colorMode === "light"?"white":"black" }}>今日</Text>
+                        <Text style={{ marginHorizontal: 5, color: colorMode === "light" ? "white" : "black" }}>今日</Text>
                     </View>
                     <View style={styles.calendarView}>
                         <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_predict.png?raw=true" }} style={styles.calendarIcon} />
-                        <Text style={{ marginHorizontal: 5, color: colorMode === "light"?"white":"black" }}>預估經期</Text>
+                        <Text style={{ marginHorizontal: 5, color: colorMode === "light" ? "white" : "black" }}>預估經期</Text>
                     </View>
                     <View style={styles.calendarView}>
                         <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_eggday.png?raw=true" }} style={styles.calendarIcon} />
-                        <Text style={{ marginHorizontal: 5, color: colorMode === "light"?"white":"black" }}>排卵日</Text>
+                        <Text style={{ marginHorizontal: 5, color: colorMode === "light" ? "white" : "black" }}>排卵日</Text>
                     </View>
                     <View style={styles.calendarView}>
                         <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_egg.png?raw=true" }} style={{ width: 22, height: 11, marginTop: 3 }} />
-                        <Text style={{ marginHorizontal: 5, color: colorMode === "light"?"white":"black" }}>排卵期 </Text>
+                        <Text style={{ marginHorizontal: 5, color: colorMode === "light" ? "white" : "black" }}>排卵期 </Text>
                     </View>
                 </View>
             </View>
