@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { useSelector } from 'react-redux';
 import { selectColorMode } from '../redux/darkModeSlice';
 import { tr } from 'react-native-paper-dates';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 
 export default function MyCalendar({ periodIsEnable }) {
@@ -39,11 +40,11 @@ export default function MyCalendar({ periodIsEnable }) {
             setStartDate(dateString);
             console.log("1");
         } else if (!endDate) { // 如果结束日期还没有选择，则将选择的日期设为结束日期
-            if(dateString<startDate){//如果選擇日期比startDate小則會重新選擇startDate
+            if (dateString < startDate) {//如果選擇日期比startDate小則會重新選擇startDate
                 setStartDate(dateString);
                 console.log("2-1");
             }
-            else{
+            else {
                 setEndDate(dateString);
                 markPeriod(startDate, dateString);// 标记开始日期到结束日期之间的日期为周期
                 console.log("2-2");
@@ -55,7 +56,7 @@ export default function MyCalendar({ periodIsEnable }) {
             setMarkedPeriod({});
             console.log("3");
         }
-        
+
     };
 
     // 标记开始日期到结束日期之间的日期为周期
@@ -78,7 +79,6 @@ export default function MyCalendar({ periodIsEnable }) {
         nextDate.setDate(nextDate.getDate() + 1);
         return nextDate.toISOString().split('T')[0];
     };
-
 
 
     return (
@@ -110,14 +110,26 @@ export default function MyCalendar({ periodIsEnable }) {
                         ...markedPeriod,
                     }}
                     theme={{
-                        //backgroundImage: "https://raw.githubusercontent.com/emba2ra3star/NTUEDTD_APP_SuGirls/main/assets/Group%2098.png",
                         textSectionTitleColor: 'white', // 顶部月份文字颜色
                         textMonthFontWeight: 'bold', // 月份文字的粗细
                         textMonthFontSize: 20, // 月份文字的大小
                         todayTextColor: '#00adf5', // 当天文字颜色
-                        calendarBackground: 'rgba(255,255,255,0.2)',
-                        dayTextColor: 'black'
+                        calendarBackground: "rgba(0,0,0,0)",
+                        arrowColor: "#747474",
+                        arrowStyle: { backgroundColor: "rgba(0,0,0,0)" },
+                        dayTextColor: '#E9B476',
+                        textDayFontWeight:"bold",
+                        monthTextColor: "rgba(0,0,0,0.7)",
+                        // 'stylesheet.calendar.header': {
+                        //     dayTextAtIndex0: {
+                        //       color: 'red'
+                        //     },
+                        //     dayTextAtIndex6: {
+                        //       color: 'green'
+                        //     }
+                        // },
                     }}
+                    style={{ backgroundColor: colorMode === "light" ? "#333333" : "white" }}
                     hideExtraDays={true}
                     hideDayNames={true}
                 />
