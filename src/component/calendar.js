@@ -6,7 +6,7 @@ import { selectColorMode } from '../redux/darkModeSlice';
 import { tr } from 'react-native-paper-dates';
 
 
-export default function MyCalendar(periodIsEnable) {
+export default function MyCalendar({ periodIsEnable }) {
     // darkMode
     const colorMode = useSelector(selectColorMode);
 
@@ -20,10 +20,9 @@ export default function MyCalendar(periodIsEnable) {
         updatedMarkedDates[dateString] = { startingDay: true, endingDay: true, color: '#EE7B7B' };
         // 渲染
         setMarkedDates(updatedMarkedDates);
-        
-        const x =Boolean(periodIsEnable);
+
+        const x = Boolean(periodIsEnable);
         if (x) {
-            setStartDate(dateString);
             console.log(`setPeriod,${x}`);
             setPeriod(day);
         }
@@ -36,23 +35,27 @@ export default function MyCalendar(periodIsEnable) {
     const setPeriod = (day) => {
         const { dateString } = day;
         // 如果开始日期还没有选择，则将选择的日期设为开始日期
-        console.log(startDate, endDate);
-        // if (!startDate) {
-        //     // setStartDate(dateString);
-        // } else 
-        if (endDate) { // 如果结束日期还没有选择，则将选择的日期设为结束日期
-            setEndDate(dateString);
-            // 标记开始日期到结束日期之间的日期为周期
-            markPeriod(startDate, dateString);
-            console.log(true);
+        if (!startDate) {
+            setStartDate(dateString);
+            console.log("1");
+        } else if (!endDate) { // 如果结束日期还没有选择，则将选择的日期设为结束日期
+            if(dateString<startDate){//如果選擇日期比startDate小則會重新選擇startDate
+                setStartDate(dateString);
+                console.log("2-1");
+            }
+            else{
+                setEndDate(dateString);
+                markPeriod(startDate, dateString);// 标记开始日期到结束日期之间的日期为周期
+                console.log("2-2");
+            }
         } else { // 如果开始日期和结束日期都已经选择，则重置选择
             console.log("clear");
-            setStartDate(null);
+            setStartDate(dateString);
             setEndDate(null);
             setMarkedPeriod({});
-            console.log(false);
+            console.log("3");
         }
-        console.log(startDate, endDate);
+        
     };
 
     // 标记开始日期到结束日期之间的日期为周期
@@ -105,10 +108,6 @@ export default function MyCalendar(periodIsEnable) {
                     markedDates={{
                         ...markedDates,
                         ...markedPeriod,
-                        '2024-03-26': { selected: true, marked: true, selectedColor: '#EE7B7B' }, // 标记特定日期
-                        '2024-03-28': { disabled: true },
-                        '2024-03-24': { startingDay: true, color: '#FFC197' },
-                        '2024-03-27': { marked: true },
                     }}
                     theme={{
                         //backgroundImage: "https://raw.githubusercontent.com/emba2ra3star/NTUEDTD_APP_SuGirls/main/assets/Group%2098.png",
