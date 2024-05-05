@@ -18,7 +18,7 @@ export default function MyCalendar({ periodIsEnable }) {
         // 清除updateDay
         const updatedMarkedDates = {}
         // 設定updateDay
-        updatedMarkedDates[dateString] = { startingDay: true, endingDay: true, color: '#EE7B7B' };
+        updatedMarkedDates[dateString] = { startingDay: true, endingDay: true, color: '#EE7B7B', textColor: "#fff", };
         // 渲染
         setMarkedDates(updatedMarkedDates);
 
@@ -62,12 +62,12 @@ export default function MyCalendar({ periodIsEnable }) {
     // 标记开始日期到结束日期之间的日期为周期
     const markPeriod = (start, end) => {
         const marked = {};
-        marked[start] = { startingDay: true, endingDay: false, color: '#FFC197' };
-        marked[end] = { startingDay: false, endingDay: true, color: '#FFC197' };
+        marked[start] = { startingDay: true, endingDay: false, color: '#FFC197', textColor: "#fff" };
+        marked[end] = { startingDay: false, endingDay: true, color: '#FFC197', textColor: "#fff" };
 
         let currentDate = getNextDate(start);
         while (currentDate < end) {
-            marked[currentDate] = { startingDay: false, endingDay: false, color: '#FFC197' };
+            marked[currentDate] = { startingDay: false, endingDay: false, color: '#FFC197', textColor: "#fff" };
             currentDate = getNextDate(currentDate);
         }
         setMarkedPeriod(marked);
@@ -88,7 +88,7 @@ export default function MyCalendar({ periodIsEnable }) {
                 <Text style={{ paddingLeft: 5, color: colorMode === "light" ? "white" : "black" }}>2024</Text>
             </View>
 
-            <View style={{ flexDirection: "row", justifyContent: "space-around", paddingVertical: 8, borderBottomWidth: 3, borderBottomColor: '#ffd5b8' }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-around", paddingVertical: 8, borderBottomWidth: 3, borderBottomColor: '#FFC9B8' }}>
                 <Text style={{ color: "#ffb673" }}>日</Text>
                 <Text style={{ color: colorMode === "light" ? "white" : "black" }}>一</Text>
                 <Text style={{ color: colorMode === "light" ? "white" : "black" }}>二</Text>
@@ -106,11 +106,19 @@ export default function MyCalendar({ periodIsEnable }) {
                     onDayPress={(day) => { handleDayPress(day) }} // 选择日期时触发的回调
                     markingType="period"
                     markedDates={{
+                        "2024-03-04": {
+                            textColor: "#C686ED"
+                        },
+                        "2024-03-05": {
+                            textColor: "#C686ED"
+                        },
+                        "2024-03-06": {
+                            textColor: "#C686ED"
+                        },
                         ...markedDates,
                         ...markedPeriod,
                     }}
                     theme={{
-                        textSectionTitleColor: 'white', // 顶部月份文字颜色
                         textMonthFontWeight: 'bold', // 月份文字的粗细
                         textMonthFontSize: 20, // 月份文字的大小
                         todayTextColor: '#00adf5', // 当天文字颜色
@@ -118,18 +126,19 @@ export default function MyCalendar({ periodIsEnable }) {
                         arrowColor: "#747474",
                         arrowStyle: { backgroundColor: "rgba(0,0,0,0)" },
                         dayTextColor: '#E9B476',
-                        textDayFontWeight:"bold",
-                        monthTextColor: "rgba(0,0,0,0.7)",
-                        // 'stylesheet.calendar.header': {
-                        //     dayTextAtIndex0: {
-                        //       color: 'red'
-                        //     },
-                        //     dayTextAtIndex6: {
-                        //       color: 'green'
-                        //     }
-                        // },
+                        textDayFontWeight: "bold",
+                        monthTextColor: "#FFC9B8",
                     }}
-                    style={{ backgroundColor: colorMode === "light" ? "#333333" : "white" }}
+                    style={{
+                        backgroundColor: colorMode === "light" ? "#333333" : "white",
+                        // borderColor: "black",
+                        // borderWidth: 2,
+                        // borderRadius: 20,
+                        shadowColor: "white",
+                        shadowOffset: { width: 10, height: 10 },
+                        shadowRadius: 20,
+                        shadowOpacity: 1,
+                    }}
                     hideExtraDays={true}
                     hideDayNames={true}
                 />

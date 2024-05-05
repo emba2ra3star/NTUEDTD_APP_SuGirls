@@ -121,7 +121,7 @@ const styles = StyleSheet.create(
             paddingHorizontal: 35,
             paddingVertical: 20,
             borderRadius: 20,
-            backgroundColor: "#FFF3EA",
+            backgroundColor: "#FFE2D5",
             opacity: 0.9
         },
         optionText: {
