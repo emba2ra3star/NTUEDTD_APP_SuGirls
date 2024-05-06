@@ -3,8 +3,8 @@ import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { useSelector } from 'react-redux';
 import { selectColorMode } from '../redux/darkModeSlice';
-import { tr } from 'react-native-paper-dates';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { useDispatch } from "react-redux";
+import { setSelectedDate } from "../redux/selectedDateSlice";
 
 
 export default function MyCalendar({ periodIsEnable }) {
@@ -13,6 +13,9 @@ export default function MyCalendar({ periodIsEnable }) {
 
     // mark selectDay
     const [markedDates, setMarkedDates] = useState({});
+
+    const dispatch = useDispatch();
+
     const handleDayPress = (day) => {
         const { dateString } = day;
         // 清除updateDay
@@ -26,7 +29,11 @@ export default function MyCalendar({ periodIsEnable }) {
         if (x) {
             console.log(`setPeriod,${x}`);
             setPeriod(day);
+            
         }
+        //設一個Date存現在選擇的日期，並用dispatch將Date引入store.js(全域變數)
+        let Date = day.dateString;
+        dispatch(setSelectedDate(Date)) //setSelectedDate為key和action
     };
 
     // mark period

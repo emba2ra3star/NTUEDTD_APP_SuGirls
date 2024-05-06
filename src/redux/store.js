@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import darkModeSlice from './darkModeSlice';
-import calendarReducer from './calendarReducer';
+import notesReducer  from "./notesSlice";
+import selectedDateReducer from "./selectedDateSlice";
 
 const store = configureStore({
   reducer: {
     darkMode:darkModeSlice,
-    caledarInfo:calendarReducer
+    selectedDate: selectedDateReducer,
+    notes: notesReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
 });

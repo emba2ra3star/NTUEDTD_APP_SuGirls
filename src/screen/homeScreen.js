@@ -5,7 +5,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useSelector } from "react-redux";
 import { selectColorMode } from "../redux/darkModeSlice";
 import MyComponent from "../component/UserList";
-
+import { selectSelectedDate } from "../redux/selectedDateSlice";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { selectNote, setNote } from "../redux/notesSlice";
 
 
 const HomeScreen = () => {
@@ -18,7 +21,23 @@ const HomeScreen = () => {
 
     // darkMode
     const colorMode = useSelector(selectColorMode);
-    
+
+    // redux
+    const dispatch = useDispatch();
+    const selectedDate = useSelector(selectSelectedDate);
+    // 把對應日期的note叫出來
+    const note = useSelector(state => selectNote(state, selectedDate));
+    const [newNote, setNewNote] = useState("");
+    // 選擇不同的日期或是更改內容就會跟著顯示對應的note內容，但無法儲存
+    useEffect(() => {
+        setNewNote(note || "");
+      }, [note]);
+    // 更改內容就會更新note內的內容，會儲存下來
+    const handleNoteChange = (text) => {
+        setNewNote(text);
+        dispatch(setNote({ date: selectedDate, note: text }));
+    };
+
     return (
         <ScrollView style={{ backgroundColor:colorMode === "light"?"#333333":"white" }}>
             <View>
@@ -96,11 +115,12 @@ const HomeScreen = () => {
                                 backgroundColor: '#FFFEFD',
                                 borderRadius: 10,
                                 borderColor: '#cbcbcb',
-
-
                             }}
                             placeholder="今天狀況如何..."
                             placeholderTextColor="#676767"
+                            //redux儲存的備註內容，並同步更新
+                            value={newNote}
+                            onChangeText={handleNoteChange}
                         />
 
                     </View>
