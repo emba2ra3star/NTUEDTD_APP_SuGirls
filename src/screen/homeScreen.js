@@ -9,6 +9,7 @@ import { selectSelectedDate } from "../redux/selectedDateSlice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { selectNote, setNote } from "../redux/notesSlice";
+import { selectFlow, setFlow } from "../redux/flowSlice";
 
 
 const HomeScreen = () => {
@@ -24,8 +25,9 @@ const HomeScreen = () => {
 
     // redux
     const dispatch = useDispatch();
+    // 選擇日期
     const selectedDate = useSelector(selectSelectedDate);
-    // 把對應日期的note叫出來
+    // 1.把對應日期的note叫出來
     const note = useSelector(state => selectNote(state, selectedDate));
     const [newNote, setNewNote] = useState("");
     // 選擇不同的日期或是更改內容就會跟著顯示對應的note內容，但無法儲存
@@ -36,6 +38,20 @@ const HomeScreen = () => {
     const handleNoteChange = (text) => {
         setNewNote(text);
         dispatch(setNote({ date: selectedDate, note: text }));
+    };
+
+    // 2.flow
+    // 把對應日期的note叫出來
+    const flow = useSelector(state => selectFlow(state, selectedDate));
+    const [newflow, setNewFlow] = useState(0);
+    // 選擇不同的日期或是更改內容就會跟著顯示對應的note內容，但無法儲存
+    useEffect(() => {
+        setNewFlow(flow || 0);
+      }, [flow]);
+    // 更改內容就會更新note內的內容，會儲存下來
+    const handleFlowChange = (value) => {
+        setNewFlow(value);
+        dispatch(setFlow({ date: selectedDate, flow: value }));
     };
 
     return (
@@ -68,8 +84,8 @@ const HomeScreen = () => {
                                 <View style={{ flexDirection: "row" }}>
                                     <View style={{ flexDirection: "row" }}>
                                         {[1, 2, 3, 4, 5].map((index) => (
-                                            <Pressable key={index} onPress={() => setFlowRating(index)}>
-                                                <MaterialCommunityIcons name="water" color={index <= flowRating ? "black" : "#CCCCCC"} size={26} />
+                                            <Pressable key={index} onPress={() => {setNewFlow(index),handleFlowChange(index)}}>
+                                                <MaterialCommunityIcons name="water" color={index <= newflow ? "black" : "#CCCCCC"} size={26} />
                                             </Pressable>
                                         ))}
                                     </View>
