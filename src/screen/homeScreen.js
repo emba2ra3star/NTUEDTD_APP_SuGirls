@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { selectNote, setNote } from "../redux/notesSlice";
 import { selectFlow, setFlow } from "../redux/flowSlice";
+import { selectPainDegree, setPainDegree } from "../redux/painDegreeSlice";
 
 
 const HomeScreen = () => {
@@ -41,17 +42,31 @@ const HomeScreen = () => {
     };
 
     // 2.flow
-    // 把對應日期的note叫出來
+    // 把對應日期的flow叫出來
     const flow = useSelector(state => selectFlow(state, selectedDate));
     const [newflow, setNewFlow] = useState(0);
-    // 選擇不同的日期或是更改內容就會跟著顯示對應的note內容，但無法儲存
+    // 選擇不同的日期或是更改內容就會跟著顯示對應的flow內容，但無法儲存
     useEffect(() => {
         setNewFlow(flow || 0);
       }, [flow]);
-    // 更改內容就會更新note內的內容，會儲存下來
+    // 更改內容就會更新flow內的內容，會儲存下來
     const handleFlowChange = (value) => {
         setNewFlow(value);
         dispatch(setFlow({ date: selectedDate, flow: value }));
+    };
+
+    // 2.painDegree
+    // 把對應日期的painDegree叫出來
+    const painDegree = useSelector(state => selectPainDegree(state, selectedDate));
+    const [newPainDegree, setNewPainDegree] = useState(0);
+    // 選擇不同的日期或是更改內容就會跟著顯示對應的painDegree內容，但無法儲存
+    useEffect(() => {
+        setNewPainDegree(painDegree || 0);
+      }, [painDegree]);
+    // 更改內容就會更新painDegree內的內容，會儲存下來
+    const handlePainDegreeChange = (value) => {
+        setNewPainDegree(value);
+        dispatch(setPainDegree({ date: selectedDate, painDegree: value }));
     };
 
     return (
@@ -96,8 +111,8 @@ const HomeScreen = () => {
                                 <Text style={{ fontSize: 16 }}>疼痛程度</Text>
                                 <View style={{ flexDirection: "row" }}>
                                     {[1, 2, 3, 4, 5].map((index) => (
-                                        <Pressable key={index} onPress={() => setPDRating(index)}>
-                                            <MaterialCommunityIcons name="lightning-bolt" color={index <= PDRating ? "black" : "#CCCCCC"} size={26} />
+                                        <Pressable key={index} onPress={() => {setNewPainDegree(index),handlePainDegreeChange(index)}}>
+                                            <MaterialCommunityIcons name="lightning-bolt" color={index <= newPainDegree ? "black" : "#CCCCCC"} size={26} />
                                         </Pressable>
                                     ))}
                                 </View>
