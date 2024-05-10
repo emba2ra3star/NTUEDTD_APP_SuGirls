@@ -22,6 +22,7 @@ export default function MyCalendar({ periodIsEnable }) {
         const updatedMarkedDates = {}
         // 設定updateDay
         updatedMarkedDates[dateString] = { startingDay: true, endingDay: true, color: '#EE7B7B', textColor: "#fff", };
+        
         // 渲染
         setMarkedDates(updatedMarkedDates);
 
@@ -29,7 +30,7 @@ export default function MyCalendar({ periodIsEnable }) {
         if (x) {
             console.log(`setPeriod,${x}`);
             setPeriod(day);
-            
+
         }
         //設一個Date存現在選擇的日期，並用dispatch將Date引入store.js(全域變數)
         let Date = day.dateString;
@@ -68,7 +69,25 @@ export default function MyCalendar({ periodIsEnable }) {
 
     // 标记开始日期到结束日期之间的日期为周期
     const markPeriod = (start, end) => {
+        // 測試predictDate
+        const predictDate = getPredictDate(start);
+        console.log(`設定預測日期：${predictDate}，startDate：${start}`);
+        // 標記predictDate
         const marked = {};
+        let markedPredictDate = predictDate;
+        for (let i = 0; i < 5; i++) {
+            if(i==0){
+                marked[markedPredictDate] = { startingDay: true, endingDay: false, color: '#DEE0C7', textColor: "#fff" };    
+            }
+            else if(i==4){
+                marked[markedPredictDate] = { startingDay: false, endingDay: true, color: '#DEE0C7', textColor: "#fff" };    
+            }
+            else{
+                marked[markedPredictDate] = { startingDay: false, endingDay: false, color: '#DEE0C7', textColor: "#fff" };
+            }
+            markedPredictDate = getNextDate(markedPredictDate);
+        }
+
         marked[start] = { startingDay: true, endingDay: false, color: '#FFC197', textColor: "#fff" };
         marked[end] = { startingDay: false, endingDay: true, color: '#FFC197', textColor: "#fff" };
 
@@ -86,6 +105,12 @@ export default function MyCalendar({ periodIsEnable }) {
         nextDate.setDate(nextDate.getDate() + 1);
         return nextDate.toISOString().split('T')[0];
     };
+    // 推算預測日期
+    const getPredictDate = (start) => {
+        const pd = new Date(start);
+        pd.setDate(pd.getDate() + 28);
+        return pd.toISOString().split('T')[0];
+    }
 
 
     return (
