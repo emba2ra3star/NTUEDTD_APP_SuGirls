@@ -83,7 +83,6 @@ const HomeScreen = () => {
                         </View>
                         <View style={{ justifyContent: "flex-end" }}>
                             <Switch
-
                                 trackColor={{ false: '#F2D7C2', true: '#FF5656' }}
                                 thumbColor={isEnabled ? '#FF5656' : 'white'}
                                 ios_backgroundColor="white"

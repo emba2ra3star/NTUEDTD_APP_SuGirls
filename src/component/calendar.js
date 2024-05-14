@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { useSelector } from 'react-redux';
 import { selectColorMode } from '../redux/darkModeSlice';
 import { useDispatch } from "react-redux";
 import { setSelectedDate } from "../redux/selectedDateSlice";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function MyCalendar({ periodIsEnable }) {
     // darkMode
@@ -14,21 +14,30 @@ export default function MyCalendar({ periodIsEnable }) {
     // mark selectDay
     const [markedDates, setMarkedDates] = useState({});
 
-    const dispatch = useDispatch();
+    // 經期開始按鈕
+    const [onPressDate, setOnPressDate] = useState({});
+    useEffect(() => {
+        console.log("按鈕 CHANGE!");
+        if (Boolean(periodIsEnable)) {
+            setPeriod(onPressDate)
+        };
+    }, [periodIsEnable]);
 
+    const dispatch = useDispatch();
+    const [myData, setMyData] = useState([]);
     const handleDayPress = (day) => {
         const { dateString } = day;
         // 清除updateDay
         const updatedMarkedDates = {}
         // 設定updateDay
         updatedMarkedDates[dateString] = { startingDay: true, endingDay: true, color: '#EE7B7B', textColor: "#fff", };
-        
+
         // 渲染
         setMarkedDates(updatedMarkedDates);
 
         const x = Boolean(periodIsEnable);
         if (x) {
-            console.log(`setPeriod,${x}`);
+            //console.log(`setPeriod,${x}`);
             setPeriod(day);
 
         }
@@ -46,25 +55,29 @@ export default function MyCalendar({ periodIsEnable }) {
         // 如果开始日期还没有选择，则将选择的日期设为开始日期
         if (!startDate) {
             setStartDate(dateString);
-            console.log("1");
+            // console.log("1");
         } else if (!endDate) { // 如果结束日期还没有选择，则将选择的日期设为结束日期
-            if (dateString < startDate) {//如果選擇日期比startDate小則會重新選擇startDate
+            if (dateString < startDate) {   //如果選擇日期比startDate小則會重新選擇startDate
                 setStartDate(dateString);
-                console.log("2-1");
+                // console.log("2-1");
             }
             else {
                 setEndDate(dateString);
-                markPeriod(startDate, dateString);// 标记开始日期到结束日期之间的日期为周期
-                console.log("2-2");
+                markPeriod(startDate, dateString);  // 标记开始日期到结束日期之间的日期为周期
+                // console.log("2-2");
+                enqueueData({ startDate, dateString }); //因為endDate儲存的會是空值，所以改為儲存dateString
+                dequeueData();
+                getData().then(data => {    //將資料抓取出來
+                    console.log('Queue 中的資料:', data);
+                });
             }
         } else { // 如果开始日期和结束日期都已经选择，则重置选择
-            console.log("clear");
+            //console.log("clear");
             setStartDate(dateString);
             setEndDate(null);
             setMarkedPeriod({});
-            console.log("3");
+            // console.log("3");
         }
-
     };
 
     // 标记开始日期到结束日期之间的日期为周期
@@ -76,13 +89,13 @@ export default function MyCalendar({ periodIsEnable }) {
         const marked = {};
         let markedPredictDate = predictDate;
         for (let i = 0; i < 5; i++) {
-            if(i==0){
-                marked[markedPredictDate] = { startingDay: true, endingDay: false, color: '#DEE0C7', textColor: "#fff" };    
+            if (i == 0) {
+                marked[markedPredictDate] = { startingDay: true, endingDay: false, color: '#DEE0C7', textColor: "#fff" };
             }
-            else if(i==4){
-                marked[markedPredictDate] = { startingDay: false, endingDay: true, color: '#DEE0C7', textColor: "#fff" };    
+            else if (i == 4) {
+                marked[markedPredictDate] = { startingDay: false, endingDay: true, color: '#DEE0C7', textColor: "#fff" };
             }
-            else{
+            else {
                 marked[markedPredictDate] = { startingDay: false, endingDay: false, color: '#DEE0C7', textColor: "#fff" };
             }
             markedPredictDate = getNextDate(markedPredictDate);
@@ -110,8 +123,47 @@ export default function MyCalendar({ periodIsEnable }) {
         const pd = new Date(start);
         pd.setDate(pd.getDate() + 28);
         return pd.toISOString().split('T')[0];
-    }
+    };
 
+    //-----------------------------------------------
+    // 儲存 queue 到 AsyncStorage
+    const saveData = async () => {
+        try {
+            await AsyncStorage.setItem('myData', JSON.stringify(myData));
+            // console.log('資料儲存成功');
+        } catch (error) {
+            console.log('儲存資料時發生錯誤:', error);
+        }
+    };
+
+    // 從 AsyncStorage 讀取 queue
+    const getData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('myData');
+            return jsonValue != null ? JSON.parse(jsonValue) : [];
+        } catch (error) {
+            console.log('讀取資料時發生錯誤:', error);
+            return [];
+        }
+    };
+
+    // 新增資料到 queue
+    const enqueueData = async (data) => {
+        const newData = [...myData, data];  //更新資料(加入新的data)
+        setMyData(newData);
+        await saveData(newData); //儲存新資料
+    };
+
+    // 從 queue 移除資料
+    const dequeueData = async () => {
+        if (myData.length > 5) {
+            console.log("delete")
+            myData.shift();
+            const newData = [...myData] ;  //更新變更後的資料
+            setMyData(newData);
+            await saveData(newData);//儲存更新後的資料
+        }
+    };
 
     return (
         <View style={{ width: "100%", marginTop: 5 }}>
@@ -135,7 +187,7 @@ export default function MyCalendar({ periodIsEnable }) {
                     current={'2024-03-20'} // 初始显示的日期
                     minDate={'2024-01-01'} // 允许选择的最早日期
                     maxDate={'2024-12-31'} // 允许选择的最晚日期
-                    onDayPress={(day) => { handleDayPress(day) }} // 选择日期时触发的回调
+                    onDayPress={(day) => { handleDayPress(day), setOnPressDate(day) }} // 选择日期时触发的回调
                     markingType="period"
                     markedDates={{
                         "2024-03-04": {
@@ -163,9 +215,6 @@ export default function MyCalendar({ periodIsEnable }) {
                     }}
                     style={{
                         backgroundColor: colorMode === "light" ? "#333333" : "white",
-                        // borderColor: "black",
-                        // borderWidth: 2,
-                        // borderRadius: 20,
                         shadowColor: "white",
                         shadowOffset: { width: 10, height: 10 },
                         shadowRadius: 20,
