@@ -31,7 +31,6 @@ export default function MyCalendar({ periodIsEnable }) {
         const updatedMarkedDates = {}
         // 設定updateDay
         updatedMarkedDates[dateString] = { startingDay: true, endingDay: true, color: '#EE7B7B', textColor: "#fff", };
-
         // 渲染
         setMarkedDates(updatedMarkedDates);
 
@@ -66,7 +65,7 @@ export default function MyCalendar({ periodIsEnable }) {
                 markPeriod(startDate, dateString);  // 标记开始日期到结束日期之间的日期为周期
                 // console.log("2-2");
                 enqueueData({ startDate, dateString }); //因為endDate儲存的會是空值，所以改為儲存dateString
-                dequeueData();
+                // dequeueData();
                 getData().then(data => {    //將資料抓取出來
                     console.log('Queue 中的資料:', data);
                 });
@@ -130,7 +129,7 @@ export default function MyCalendar({ periodIsEnable }) {
     const saveData = async () => {
         try {
             await AsyncStorage.setItem('myData', JSON.stringify(myData));
-            // console.log('資料儲存成功');
+            console.log('資料儲存成功');
         } catch (error) {
             console.log('儲存資料時發生錯誤:', error);
         }
@@ -147,23 +146,53 @@ export default function MyCalendar({ periodIsEnable }) {
         }
     };
 
-    // 新增資料到 queue
+    // 新增資料到 queue --> 結合dequeueData() ==> 更新queueData
     const enqueueData = async (data) => {
         const newData = [...myData, data];  //更新資料(加入新的data)
+        console.log("[new]")
         setMyData(newData);
-        await saveData(newData); //儲存新資料
+        if (newData.length > 5) {   //最多存5筆資料
+            console.log("[delete]")
+            // const newData = [...myData];  //更新變更後的資料
+            newData.shift();
+            setMyData(newData);
+        }
+        await saveData(myData); //儲存新資料
     };
 
     // 從 queue 移除資料
-    const dequeueData = async () => {
-        if (myData.length > 5) {
-            console.log("delete")
-            myData.shift();
-            const newData = [...myData] ;  //更新變更後的資料
-            setMyData(newData);
-            await saveData(newData);//儲存更新後的資料
+    // const dequeueData = async () => {
+    //     if (myData.length > 3) {
+    //         console.log("[delete]")
+    //         const newData = [...myData];  //更新變更後的資料
+    //         newData.shift();
+    //         setMyData(newData);
+    //         await saveData(newData);//儲存更新後的資料
+    //     }
+    // };
+
+    // 渲染queue
+
+    const [prePeriodMarked, setPrePeriodMarked] = useState(myData)
+    useEffect(() => {
+        const marked = {};
+        // if(myData[0]!=null){console.log(myData[0].dateString);}
+
+        // 將5筆queue資料的渲染格式存進marked
+        for (let i = 0; i < 5; i++) {
+            if (myData[i] != null) {
+                marked[myData[i].dateString] = { startingDay: false, endingDay: true, color: '#FFC197', textColor: "#fff" };
+                marked[myData[i].startDate] = { startingDay: true, endingDay: false, color: '#FFC197', textColor: "#fff" };
+                let currentD = getNextDate(myData[i].startDate);
+                while (currentD != myData[i].dateString){
+                    marked[currentD] = { startingDay: false, endingDay: false, color: '#FFC197', textColor: "#fff" };
+                    currentD = getNextDate(currentD);
+                }
+            }
         }
-    };
+
+        setPrePeriodMarked(marked);
+    }, [myData])
 
     return (
         <View style={{ width: "100%", marginTop: 5 }}>
@@ -201,6 +230,7 @@ export default function MyCalendar({ periodIsEnable }) {
                         },
                         ...markedDates,
                         ...markedPeriod,
+                        ...prePeriodMarked,
                     }}
                     theme={{
                         textMonthFontWeight: 'bold', // 月份文字的粗细
