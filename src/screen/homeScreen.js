@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import MyCalendar from "../component/calendar";
-import { Button, StyleSheet, Text, View, Switch, TextInput, ScrollView,Pressable } from 'react-native';
+import { Button, StyleSheet, Text, View, Switch, TextInput, ScrollView, Pressable, TouchableOpacity, Modal } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSelector } from "react-redux";
 import { selectColorMode } from "../redux/darkModeSlice";
@@ -16,7 +16,8 @@ import { selectPainDegree, setPainDegree } from "../redux/painDegreeSlice";
 const HomeScreen = () => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-
+    //身體狀況的彈出視窗
+    const [modalVisible, setModalVisible] = useState(false);
     // 流量&疼痛程度rating
     const [flowRating, setFlowRating] = useState(false);
     const [PDRating, setPDRating] = useState(false);
@@ -34,7 +35,7 @@ const HomeScreen = () => {
     // 選擇不同的日期或是更改內容就會跟著顯示對應的note內容，但無法儲存
     useEffect(() => {
         setNewNote(note || "");
-      }, [note]);
+    }, [note]);
     // 更改內容就會更新note內的內容，會儲存下來
     const handleNoteChange = (text) => {
         setNewNote(text);
@@ -48,7 +49,7 @@ const HomeScreen = () => {
     // 選擇不同的日期或是更改內容就會跟著顯示對應的flow內容，但無法儲存
     useEffect(() => {
         setNewFlow(flow || 0);
-      }, [flow]);
+    }, [flow]);
     // 更改內容就會更新flow內的內容，會儲存下來
     const handleFlowChange = (value) => {
         setNewFlow(value);
@@ -62,7 +63,7 @@ const HomeScreen = () => {
     // 選擇不同的日期或是更改內容就會跟著顯示對應的painDegree內容，但無法儲存
     useEffect(() => {
         setNewPainDegree(painDegree || 0);
-      }, [painDegree]);
+    }, [painDegree]);
     // 更改內容就會更新painDegree內的內容，會儲存下來
     const handlePainDegreeChange = (value) => {
         setNewPainDegree(value);
@@ -70,9 +71,9 @@ const HomeScreen = () => {
     };
 
     return (
-        <ScrollView style={{ backgroundColor:colorMode === "light"?"#333333":"white" }}>
+        <ScrollView style={{ backgroundColor: colorMode === "light" ? "#333333" : "white" }}>
             <View>
-                <MyCalendar periodIsEnable={isEnabled}/>
+                <MyCalendar periodIsEnable={isEnabled} />
                 {/* <MyComponent /> */}
                 <View style={styles.optionContent}>
                     {/* 月事開始 */}
@@ -92,43 +93,88 @@ const HomeScreen = () => {
                         </View>
 
                     </View>
-                        {isEnabled &&(<View style={{ marginBottom: 15 }}>
-                            <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: 30, marginVertical: 5 }}>
-                                <Text style={{ fontSize: 16 }}>流量</Text>
-                                <View style={{ flexDirection: "row" }}>
-                                    <View style={{ flexDirection: "row" }}>
-                                        {[1, 2, 3, 4, 5].map((index) => (
-                                            <Pressable key={index} onPress={() => {setNewFlow(index),handleFlowChange(index)}}>
-                                                <MaterialCommunityIcons name="water" color={index <= newflow ? "black" : "#CCCCCC"} size={26} />
-                                            </Pressable>
-                                        ))}
-                                    </View>
-                                </View>
-                            </View>
-
-                            <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: 30, marginVertical: 5 }}>
-                                <Text style={{ fontSize: 16 }}>疼痛程度</Text>
+                    {isEnabled && (<View style={{ marginBottom: 15 }}>
+                        <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: 30, marginVertical: 5 }}>
+                            <Text style={{ fontSize: 16 }}>流量</Text>
+                            <View style={{ flexDirection: "row" }}>
                                 <View style={{ flexDirection: "row" }}>
                                     {[1, 2, 3, 4, 5].map((index) => (
-                                        <Pressable key={index} onPress={() => {setNewPainDegree(index),handlePainDegreeChange(index)}}>
-                                            <MaterialCommunityIcons name="lightning-bolt" color={index <= newPainDegree ? "black" : "#CCCCCC"} size={26} />
+                                        <Pressable key={index} onPress={() => { setNewFlow(index), handleFlowChange(index) }}>
+                                            <MaterialCommunityIcons name="water" color={index <= newflow ? "black" : "#CCCCCC"} size={26} />
                                         </Pressable>
                                     ))}
                                 </View>
                             </View>
+                        </View>
 
-                        </View>)}
+                        <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: 30, marginVertical: 5 }}>
+                            <Text style={{ fontSize: 16 }}>疼痛程度</Text>
+                            <View style={{ flexDirection: "row" }}>
+                                {[1, 2, 3, 4, 5].map((index) => (
+                                    <Pressable key={index} onPress={() => { setNewPainDegree(index), handlePainDegreeChange(index) }}>
+                                        <MaterialCommunityIcons name="lightning-bolt" color={index <= newPainDegree ? "black" : "#CCCCCC"} size={26} />
+                                    </Pressable>
+                                ))}
+                            </View>
+                        </View>
+
+                    </View>)}
 
                     {/* 身體狀況 */}
-                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-                        <View style={{ flexDirection: "row" }}>
-                            <MaterialCommunityIcons name="clipboard-list-outline" color="black" size={26} />
-                            <Text style={{ fontSize: 18 }}>身體狀況</Text>
+                    <TouchableOpacity onPress={() => setModalVisible(true)}                    >
+                        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+                            <View style={{ flexDirection: "row" }}>
+                                <MaterialCommunityIcons name="clipboard-list-outline" color="black" size={26} />
+                                <Text style={{ fontSize: 18 }}>身體狀況</Text>
+                            </View>
+                            <View style={{ justifyContent: "flex-end", marginRight: 13 }}>
+                                <MaterialCommunityIcons name="plus" color="black" size={26} />
+                            </View>
                         </View>
-                        <View style={{ justifyContent: "flex-end", marginRight: 13 }}>
-                            <MaterialCommunityIcons name="plus" color="black" size={26} />
+                    </TouchableOpacity>
+                    {/* 彈出視窗 */}
+                    <Modal animationType="slide" transparent={true} visible={modalVisible}>
+                        <View style={{ position: "absolute", bottom: 0, width: "100%", height: "30%", backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', borderRadius: 30, borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
+                            <View style={{ position: 'absolute', top: 10, left: 20 }}>
+                                <Text style={{ color: 'black', fontSize: 18, paddingVertical: 8, textAlign: 'center' }}>
+                                    選擇身體狀況
+                                </Text>
+                            </View>
+                            <TouchableOpacity style={{ position: 'absolute', top: 10, right: 20 }} onPress={() => setModalVisible(false)}>
+                                <Text style={{ alignItems: 'center', paddingHorizontal: 5, paddingVertical: 3, fontSize: 24, }}>
+                                    X
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ position: 'absolute', bottom: 10, right: 10, }} onPress={() => setModalVisible(false)}>
+                                <Text style={{ color: "#6974B0", alignItems: 'center', paddingHorizontal: 5, paddingVertical: 3, fontSize: 16 }}>
+                                    確認
+                                </Text>
+                            </TouchableOpacity>
+                            {/* 身體狀況的選項 */}
+                            <View style={{ flexDirection: "row", width: "100%", paddingHorizontal: 20,marginVertical:10 }}>
+                                <TouchableOpacity style={{ backgroundColor: "#ff8787", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}>
+                                    <Text style={{ color: "white", fontSize: 18 }}>頭痛</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{ backgroundColor: "#C7E4FF", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}>
+                                    <Text style={{ color: "white", fontSize: 18 }}>四肢無力</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{ backgroundColor: "#FFB47D", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}>
+                                    <Text style={{ color: "white", fontSize: 18 }}>貧血</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{ backgroundColor: "#FFF4CD", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}>
+                                    <Text style={{ color: "white", fontSize: 18 }}>腰痠</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ flexDirection: "row", width: "100%", justifyContent: "flex-start", paddingHorizontal: 20,marginVertical:10 }}>
+                                <TouchableOpacity style={{ backgroundColor: "#E8DFFA", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}>
+                                    <Text style={{ color: "white", fontSize: 18 }}>腹痛</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{ backgroundColor: "#DAF6D5", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}>
+                                    <Text style={{ color: "white", fontSize: 18 }}>長痘痘</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                    </View>
+                    </Modal>
 
                     {/* 備註 */}
                     <View style={{ justifyContent: "space-between" }}>
@@ -178,7 +224,7 @@ const styles = StyleSheet.create(
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between"
-        }
+        },
     }
 );
 
