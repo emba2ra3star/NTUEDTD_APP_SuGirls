@@ -22,9 +22,10 @@ export default function MyCalendar({ periodIsEnable }) {
             setPeriod(onPressDate)
         };
     }, [periodIsEnable]);
+    // queue
+    const [myData, setMyData] = useState([]);
 
     const dispatch = useDispatch();
-    const [myData, setMyData] = useState([]);
     const handleDayPress = (day) => {
         const { dateString } = day;
         // 清除updateDay
@@ -151,7 +152,7 @@ export default function MyCalendar({ periodIsEnable }) {
         const newData = [...myData, data];  //更新資料(加入新的data)
         console.log("[new]")
         setMyData(newData);
-        if (newData.length > 5) {   //最多存5筆資料
+        if (newData.length > 10) {   //最多存5筆資料
             console.log("[delete]")
             // const newData = [...myData];  //更新變更後的資料
             newData.shift();
@@ -179,7 +180,7 @@ export default function MyCalendar({ periodIsEnable }) {
         // if(myData[0]!=null){console.log(myData[0].dateString);}
 
         // 將5筆queue資料的渲染格式存進marked
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 10; i++) {
             if (myData[i] != null) {
                 marked[myData[i].dateString] = { startingDay: false, endingDay: true, color: '#FFC197', textColor: "#fff" };
                 marked[myData[i].startDate] = { startingDay: true, endingDay: false, color: '#FFC197', textColor: "#fff" };
@@ -193,6 +194,10 @@ export default function MyCalendar({ periodIsEnable }) {
 
         setPrePeriodMarked(marked);
     }, [myData])
+
+    //-----------------------------------------------
+    // redux of queue
+
 
     return (
         <View style={{ width: "100%", marginTop: 5 }}>
