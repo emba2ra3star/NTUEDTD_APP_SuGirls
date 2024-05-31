@@ -11,14 +11,16 @@ import { useEffect } from "react";
 import { selectNote, setNote } from "../redux/notesSlice";
 import { selectFlow, setFlow } from "../redux/flowSlice";
 import { selectPainDegree, setPainDegree } from "../redux/painDegreeSlice";
+import { selectMySyndromes, setMySyndromes } from "../redux/syndromesSlice";
 
 
 const HomeScreen = () => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
     //身體狀況(彈出視窗)
     const [modalVisible, setModalVisible] = useState(false);    // 彈出視窗
-    const [syndromes, setSyndromes] = useState([]);    // 設定症狀數組
+
     // 流量&疼痛程度rating
     const [flowRating, setFlowRating] = useState(false);
     const [PDRating, setPDRating] = useState(false);
@@ -72,14 +74,22 @@ const HomeScreen = () => {
     };
 
     // 設定syndromes
-    const toggleSyndromesBtn = (value) => {
-        if (syndromes.includes(value)) {
-            setSyndromes(syndromes.filter(i => i != value))
+    const mySyndromes = useSelector(state => selectMySyndromes(state, selectedDate)) || [];
+    let currentSyndromes = [];
+
+    useEffect(() => {
+        console.log("觸發", mySyndromes)
+    }, [mySyndromes]);
+
+    const toggleSyndromesBtn = (value) => { //按鈕改變syndromes
+        if (mySyndromes.includes(value)) {
+            dispatch(setMySyndromes({ date: selectedDate, syndromes: mySyndromes.filter(i => i !== value) }))
+        } else {
+            dispatch(setMySyndromes({ date: selectedDate, syndromes: [...mySyndromes, value] }))
         }
-        else {
-            setSyndromes([...syndromes, value])
-        }
-    }
+        // dispatch(setMySyndromes({ date: selectedDate, syndromes: currentSyndromes }))
+    };
+
 
     return (
         <ScrollView style={{ backgroundColor: colorMode === "light" ? "#333333" : "white" }}>
@@ -142,6 +152,30 @@ const HomeScreen = () => {
                                 <MaterialCommunityIcons name="plus" color="black" size={26} />
                             </View>
                         </View>
+                        {/* syndromes顯示標籤列表 */}
+                        <View style={{ flexDirection: "row", width: "100%" }}>
+                            <View style={{ flexDirection: "row", width: "100%" }}>
+                                {mySyndromes.includes("頭痛") && <View style={{ backgroundColor: "#ff8787", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}>
+                                    <Text style={{ color: "white", fontSize: 18 }}>頭痛</Text>
+                                </View>}
+                                {mySyndromes.includes("四肢無力") && <View style={{ backgroundColor: "#7BBCF9", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}>
+                                    <Text style={{ color: "white", fontSize: 18 }}>四肢無力</Text>
+                                </View>}
+                                {mySyndromes.includes("貧血") && <View style={{ backgroundColor: "#FFB47D", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}>
+                                    <Text style={{ color: "white", fontSize: 18 }}>貧血</Text>
+                                </View>}
+                                {mySyndromes.includes("腰痠") && <View style={{ backgroundColor: "#FCDD8C", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}>
+                                    <Text style={{ color: "white", fontSize: 18 }}>腰痠</Text>
+                                </View>}
+                                {mySyndromes.includes("腹痛") && <View style={{ backgroundColor: "#D4BEFF", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}>
+                                    <Text style={{ color: "white", fontSize: 18 }}>腹痛</Text>
+                                </View>}
+                                {mySyndromes.includes("長痘痘") && <View style={{ backgroundColor: "#AAE1A1", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}>
+                                    <Text style={{ color: "white", fontSize: 18 }}>長痘痘</Text>
+                                </View>}
+                            </View>
+                        </View>
+                        {/* <Text>{mySyndromes ? mySyndromes.join(', ') : "none"}</Text> */}
                     </TouchableOpacity>
                     {/* 彈出視窗 */}
                     <Modal animationType="slide" transparent={true} visible={modalVisible}>
@@ -153,53 +187,53 @@ const HomeScreen = () => {
                                 </Text>
                             </View>
                             {/* 確認&關閉 按鈕 */}
-                            <TouchableOpacity style={{ position: 'absolute', top: 10, right: 20 }} onPress={() => setModalVisible(false)}>
-                                <Text style={{ alignItems: 'center', paddingHorizontal: 5, paddingVertical: 3, fontSize: 24, }}>
-                                    X
+                            <TouchableOpacity style={{ position: 'absolute', top: 10, right: 20 }} onPress={() => { dispatch(setMySyndromes({ date: selectedDate, syndromes: [] })) }}>
+                                <Text style={{ alignItems: 'center', paddingHorizontal: 10, paddingVertical: 10, fontSize: 18, }}>
+                                    clear
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ position: 'absolute', bottom: 10, right: 10, }} onPress={() => setModalVisible(false)}>
-                                <Text style={{ color: "#6974B0", alignItems: 'center', paddingHorizontal: 5, paddingVertical: 3, fontSize: 16 }}>
+                            <TouchableOpacity style={{ position: 'absolute', bottom: 10, right: 10, }} onPress={() => { setModalVisible(false) }}>
+                                <Text style={{ color: "#6974B0", alignItems: 'center', paddingHorizontal: 10, paddingVertical: 10, fontSize: 16 }}>
                                     確認
                                 </Text>
                             </TouchableOpacity>
-                            {/* 身體狀況的選項 */}
+                            {/* 身體狀況的按鈕選項 */}
                             <View style={{ flexDirection: "row", width: "100%", paddingHorizontal: 20, marginVertical: 10 }}>
                                 <TouchableOpacity
-                                    style={{ backgroundColor: syndromes.includes(1) ? "#ff8787" : "#FFC5C5", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}
-                                    onPress={()=>toggleSyndromesBtn(1)}
+                                    style={{ backgroundColor: mySyndromes.includes("頭痛") ? "#ff8787" : "#FFC5C5", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}
+                                    onPress={() => toggleSyndromesBtn("頭痛")}
                                 >
                                     <Text style={{ color: "white", fontSize: 18 }}>頭痛</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{ backgroundColor: syndromes.includes(2) ? "#7BBCF9" : "#C7E4FF", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}
-                                    onPress={()=>toggleSyndromesBtn(2)}
+                                    style={{ backgroundColor: mySyndromes.includes("四肢無力") ? "#7BBCF9" : "#C7E4FF", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}
+                                    onPress={() => toggleSyndromesBtn("四肢無力")}
                                 >
                                     <Text style={{ color: "white", fontSize: 18 }}>四肢無力</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{ backgroundColor: syndromes.includes(3) ? "#FFB47D" : "#FFD5B7", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}
-                                    onPress={()=>toggleSyndromesBtn(3)}
+                                    style={{ backgroundColor: mySyndromes.includes("貧血") ? "#FFB47D" : "#FFD5B7", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}
+                                    onPress={() => toggleSyndromesBtn("貧血")}
                                 >
                                     <Text style={{ color: "white", fontSize: 18 }}>貧血</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{ backgroundColor: syndromes.includes(4) ? "#FCDD8C" : "#FFF4CD", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}
-                                    onPress={()=>toggleSyndromesBtn(4)}
+                                    style={{ backgroundColor: mySyndromes.includes("腰痠") ? "#FCDD8C" : "#FFF4CD", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}
+                                    onPress={() => toggleSyndromesBtn("腰痠")}
                                 >
                                     <Text style={{ color: "white", fontSize: 18 }}>腰痠</Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={{ flexDirection: "row", width: "100%", justifyContent: "flex-start", paddingHorizontal: 20, marginVertical: 10 }}>
                                 <TouchableOpacity
-                                    style={{ backgroundColor: syndromes.includes(5) ? "#D4BEFF" : "#E8DFFA", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}
-                                    onPress={()=>toggleSyndromesBtn(5)}
+                                    style={{ backgroundColor: mySyndromes.includes("腹痛") ? "#D4BEFF" : "#E8DFFA", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}
+                                    onPress={() => toggleSyndromesBtn("腹痛")}
                                 >
                                     <Text style={{ color: "white", fontSize: 18 }}>腹痛</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={{ backgroundColor: syndromes.includes(6) ? "#AAE1A1" : "#DAF6D5", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}
-                                    onPress={()=>toggleSyndromesBtn(6)}
+                                    style={{ backgroundColor: mySyndromes.includes("長痘痘") ? "#AAE1A1" : "#DAF6D5", paddingHorizontal: 15, paddingVertical: 5, borderRadius: 30, marginLeft: 10 }}
+                                    onPress={() => toggleSyndromesBtn("長痘痘")}
                                 >
                                     <Text style={{ color: "white", fontSize: 18 }}>長痘痘</Text>
                                 </TouchableOpacity>
