@@ -114,7 +114,7 @@ const HomeScreen = () => {
                         </View>
 
                     </View>
-                    {isEnabled && (<View style={{ marginBottom: 15 }}>
+                    <View style={{ marginBottom: 15 }}>
                         <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: 30, marginVertical: 5 }}>
                             <Text style={{ fontSize: 16 }}>流量</Text>
                             <View style={{ flexDirection: "row" }}>
@@ -139,7 +139,7 @@ const HomeScreen = () => {
                             </View>
                         </View>
 
-                    </View>)}
+                    </View>
 
                     {/* 身體狀況 */}
                     <TouchableOpacity onPress={() => setModalVisible(true)}>
