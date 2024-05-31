@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import MyCalendar from "../component/calendar";
-import { Button, StyleSheet, Text, View, Switch, TextInput, ScrollView, Pressable, TouchableOpacity, Modal } from 'react-native';
+import { StyleSheet, Text, View, Switch, TextInput, ScrollView, Pressable, TouchableOpacity, Modal } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSelector } from "react-redux";
 import { selectColorMode } from "../redux/darkModeSlice";
-import MyComponent from "../component/UserList";
 import { selectSelectedDate } from "../redux/selectedDateSlice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -17,10 +16,8 @@ import { selectMySyndromes, setMySyndromes } from "../redux/syndromesSlice";
 const HomeScreen = () => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-
-    //身體狀況(彈出視窗)
-    const [modalVisible, setModalVisible] = useState(false);    // 彈出視窗
-
+    //身體狀況的彈出視窗
+    const [modalVisible, setModalVisible] = useState(false);
     // 流量&疼痛程度rating
     const [flowRating, setFlowRating] = useState(false);
     const [PDRating, setPDRating] = useState(false);
@@ -47,7 +44,7 @@ const HomeScreen = () => {
 
     // 2.flow
     // 把對應日期的flow叫出來
-    const flow = useSelector(state => selectFlow(state, selectedDate));
+    const flow = useSelector(state => selectFlow(state, selectedDate));//state[selectedDate] 陣列[key]
     const [newflow, setNewFlow] = useState(0);
     // 選擇不同的日期或是更改內容就會跟著顯示對應的flow內容，但無法儲存
     useEffect(() => {
@@ -89,7 +86,6 @@ const HomeScreen = () => {
         }
         // dispatch(setMySyndromes({ date: selectedDate, syndromes: currentSyndromes }))
     };
-
 
     return (
         <ScrollView style={{ backgroundColor: colorMode === "light" ? "#333333" : "white" }}>
@@ -142,7 +138,7 @@ const HomeScreen = () => {
                     </View>
 
                     {/* 身體狀況 */}
-                    <TouchableOpacity onPress={() => setModalVisible(true)}>
+                    <TouchableOpacity onPress={() => setModalVisible(true)}                    >
                         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
                             <View style={{ flexDirection: "row" }}>
                                 <MaterialCommunityIcons name="clipboard-list-outline" color="black" size={26} />

@@ -6,26 +6,28 @@ import { selectColorMode } from '../redux/darkModeSlice';
 import { useDispatch } from "react-redux";
 import { setSelectedDate } from "../redux/selectedDateSlice";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {updatedata} from '../screen/analyzeScreen';
+import { selectanalyzedata, setanalyzedata } from "../redux/analyzedataSlice";
 export default function MyCalendar({ periodIsEnable }) {
     // darkMode
     const colorMode = useSelector(selectColorMode);
 
+    
+    
     // mark selectDay
     const [markedDates, setMarkedDates] = useState({});
 
     // 經期開始按鈕
     const [onPressDate, setOnPressDate] = useState({});
     useEffect(() => {
-        console.log("按鈕 CHANGE!");
+        //console.log("按鈕 CHANGE!");
         if (Boolean(periodIsEnable)) {
             setPeriod(onPressDate)
         };
     }, [periodIsEnable]);
-    // queue
-    const [myData, setMyData] = useState([]);
 
     const dispatch = useDispatch();
+    const [myData, setMyData] = useState([]);
     const handleDayPress = (day) => {
         const { dateString } = day;
         // 清除updateDay
@@ -37,7 +39,6 @@ export default function MyCalendar({ periodIsEnable }) {
 
         const x = Boolean(periodIsEnable);
         if (x) {
-            //console.log(`setPeriod,${x}`);
             setPeriod(day);
 
         }
@@ -45,7 +46,7 @@ export default function MyCalendar({ periodIsEnable }) {
         let Date = day.dateString;
         dispatch(setSelectedDate(Date)) //setSelectedDate為key和action
     };
-
+    
     // mark period
     const [markedPeriod, setMarkedPeriod] = useState({});
     const [startDate, setStartDate] = useState(null); // 儲存開始日期
@@ -55,28 +56,27 @@ export default function MyCalendar({ periodIsEnable }) {
         // 如果开始日期还没有选择，则将选择的日期设为开始日期
         if (!startDate) {
             setStartDate(dateString);
-            // console.log("1");
         } else if (!endDate) { // 如果结束日期还没有选择，则将选择的日期设为结束日期
             if (dateString < startDate) {   //如果選擇日期比startDate小則會重新選擇startDate
                 setStartDate(dateString);
-                // console.log("2-1");
             }
             else {
                 setEndDate(dateString);
                 markPeriod(startDate, dateString);  // 标记开始日期到结束日期之间的日期为周期
-                // console.log("2-2");
                 enqueueData({ startDate, dateString }); //因為endDate儲存的會是空值，所以改為儲存dateString
-                // dequeueData();
-                getData().then(data => {    //將資料抓取出來
-                    console.log('Queue 中的資料:', data);
-                });
+                let Month = startDate.match(/-(\d{2})-/)[1];
+                let startday = startDate.split("-")[2];
+                let endday = dateString.split("-")[2];
+                Month = parseInt(Month, 10);    //parseInt將字串轉變為10進制的整數
+                startday = parseInt(startday, 10);
+                endday = parseInt(endday, 10);
+                updatedata(Month, startday, endday);
+                //dispatch(setanalyzedata({ month: 3, data: {Month, startday, endday}})); //{key, value}
             }
         } else { // 如果开始日期和结束日期都已经选择，则重置选择
-            //console.log("clear");
             setStartDate(dateString);
             setEndDate(null);
             setMarkedPeriod({});
-            // console.log("3");
         }
     };
 
@@ -84,7 +84,6 @@ export default function MyCalendar({ periodIsEnable }) {
     const markPeriod = (start, end) => {
         // 測試predictDate
         const predictDate = getPredictDate(start);
-        console.log(`設定預測日期：${predictDate}，startDate：${start}`);
         // 標記predictDate
         const marked = {};
         let markedPredictDate = predictDate;
@@ -122,9 +121,9 @@ export default function MyCalendar({ periodIsEnable }) {
     const getPredictDate = (start) => {
         const pd = new Date(start);
         pd.setDate(pd.getDate() + 28);
-        return pd.toISOString().split('T')[0];
+        return pd.toISOString().split('T')[0];  //推測的下一次第一天
     };
-
+    
     //-----------------------------------------------
     // 儲存 queue 到 AsyncStorage
     const saveData = async () => {
@@ -150,27 +149,13 @@ export default function MyCalendar({ periodIsEnable }) {
     // 新增資料到 queue --> 結合dequeueData() ==> 更新queueData
     const enqueueData = async (data) => {
         const newData = [...myData, data];  //更新資料(加入新的data)
-        console.log("[new]")
         setMyData(newData);
-        if (newData.length > 10) {   //最多存5筆資料
-            console.log("[delete]")
-            // const newData = [...myData];  //更新變更後的資料
+        if (newData.length > 10) {   //最多存10筆資料
             newData.shift();
             setMyData(newData);
         }
         await saveData(myData); //儲存新資料
     };
-
-    // 從 queue 移除資料
-    // const dequeueData = async () => {
-    //     if (myData.length > 3) {
-    //         console.log("[delete]")
-    //         const newData = [...myData];  //更新變更後的資料
-    //         newData.shift();
-    //         setMyData(newData);
-    //         await saveData(newData);//儲存更新後的資料
-    //     }
-    // };
 
     // 渲染queue
 
@@ -179,7 +164,7 @@ export default function MyCalendar({ periodIsEnable }) {
         const marked = {};
         // if(myData[0]!=null){console.log(myData[0].dateString);}
 
-        // 將5筆queue資料的渲染格式存進marked
+        // 將10筆queue資料的渲染格式存進marked
         for (let i = 0; i < 10; i++) {
             if (myData[i] != null) {
                 marked[myData[i].dateString] = { startingDay: false, endingDay: true, color: '#FFC197', textColor: "#fff" };
@@ -193,11 +178,8 @@ export default function MyCalendar({ periodIsEnable }) {
         }
 
         setPrePeriodMarked(marked);
+        
     }, [myData])
-
-    //-----------------------------------------------
-    // redux of queue
-
 
     return (
         <View style={{ width: "100%", marginTop: 5 }}>
@@ -258,7 +240,6 @@ export default function MyCalendar({ periodIsEnable }) {
                     hideExtraDays={true}
                     hideDayNames={true}
                 />
-
                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 5 }}>
                     <View style={styles.calendarView}>
                         <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Icon_calendar/Icon_period.png?raw=true" }} style={styles.calendarIcon} />
