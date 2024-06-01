@@ -69,6 +69,8 @@ const chartConfig = {
 };
 
 let day = 21;
+let text="距離下次經期：";
+let predictdaysText = "2024年5月3日"
 
 const AnalyzeScreen = () => {
     const { navigate } = useNavigation();
@@ -95,9 +97,9 @@ const AnalyzeScreen = () => {
         Periodlabels();
         Predict();
     };
-    
+    // 週期的標籤函式
     const monthofyear = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const daysofmonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    const daysofmonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     const Cyclelabels = () => {
         let FiveMonthData = ((selectedMonth - 5) + 12) % 12 + 1;
         let count = 0;
@@ -105,15 +107,16 @@ const AnalyzeScreen = () => {
         let newData = [];
         for (let i = FiveMonthData; count < 5; i++, count++) {
             i = (i - 1) % 12 + 1;
+            let lastmonth = (i - 1) == 0 ? 12 : (i - 1);//前一個月
             newLabels.push(monthofyear[i - 1]);
-            if (monthdata[i] !== undefined && monthdata[i - 1] !== undefined) {
-                if (monthdata[i - 1][0] > monthdata[i - 1][1]) {    //代表前一個月的endday是有跨到這個月的
-                    newData.push((monthdata[i][0]) - monthdata[i - 1][1]);//假如上一筆4/1(尾)~這一筆4/20(頭)(算式:(20-1)=19(天))
+            if (monthdata[i] !== undefined && monthdata[lastmonth] !== undefined) {
+                if (monthdata[lastmonth][0] > monthdata[lastmonth][1]) {    //代表前一個月的endday是有跨到這個月的
+                    newData.push((monthdata[i][0]) - monthdata[lastmonth][1]);//假如上一筆4/1(尾)~這一筆4/20(頭)(算式:(20-1)=19(天))
                 }
                 else {//正常情況
                     // 前一個月的天數的[index] - 前一個月的endday + 這一個月的startday
-                    // (daysofmonth[(i-1)-1)] - monthdata[i - 1][1] + (monthdata[i][0])
-                    newData.push((daysofmonth[(i - 1) - 1] - monthdata[i - 1][1]) + (monthdata[i][0])); // 假如3/30(尾)~4/20(頭)(算式:(31-30)+20=21(天)) (monthdata[i][0]為這個月的startday，monthdata[i-1][1]為前一個月的endday。)
+                    // (daysofmonth[(i-1)-1)] - monthdata[lastmonth][1] + (monthdata[i][0])
+                    newData.push((daysofmonth[(i - 1) - 1] - monthdata[lastmonth][1]) + (monthdata[i][0])); // 假如3/30(尾)~4/20(頭)(算式:(31-30)+20=21(天)) (monthdata[i][0]為這個月的startday，monthdata[i-1][1]為前一個月的endday。)
                 }
 
             } else {
@@ -126,7 +129,7 @@ const AnalyzeScreen = () => {
             datasets: [{ data: newData }]
         }));
     };
-
+    // 經期天數的標籤函式
     const Periodlabels = () => {
         let FiveMonthData = ((selectedMonth - 5) + 12) % 12 + 1;
         let count = 0;
@@ -148,6 +151,7 @@ const AnalyzeScreen = () => {
         }));
     };
 
+    // 倒數天數函式
     const today = new Date();
     let thisday = today.getDate();
     let month = today.getMonth() + 1; // January is 0!
@@ -155,37 +159,57 @@ const AnalyzeScreen = () => {
     thisday = parseInt(thisday, 10);
 
     const Predict = () => {
-        if (monthdata[selectedMonth] !== undefined && monthdata[selectedMonth - 1] !== undefined) {
-            if (selectedMonth != month) {
+        let predictdays = 0;
+        if (monthdata[selectedMonth] !== undefined) {
+            if (selectedMonth + 1 < month) {
                 let days = 0;
-                for (let j = selectedMonth + 1; j < month; j++) {
+                for (let j = selectedMonth + 1; j < month - 1; j++) {
                     days = daysofmonth[j] + days;
                 }
-                console.log(thisday + (daysofmonth[selectedMonth] - (monthdata[selectedMonth][0] + 28)) + days);
+                predictdays = -(thisday + (daysofmonth[selectedMonth] - ((monthdata[selectedMonth][0] + 28) - daysofmonth[selectedMonth - 1])) + days);
             }
-            else {
-                if (monthdata[selectedMonth][0] + 28 >= thisday) {    //正常
-                    console.log((monthdata[selectedMonth][0] + 28) - thisday);
+            else if(selectedMonth + 1 == month && (monthdata[selectedMonth][0] + 28) - daysofmonth[selectedMonth - 1] <= 0){    // 選擇5月，預期在5月
+                predictdays = -(thisday + (daysofmonth[selectedMonth - 1] - (monthdata[selectedMonth][0] + 28)));
+            }
+            else if(selectedMonth + 1 == month && (monthdata[selectedMonth][0] + 28) - daysofmonth[selectedMonth - 1] > 0){     // 選擇5月，預期在6月
+                if(thisday > (monthdata[selectedMonth][0] + 28) - daysofmonth[selectedMonth - 1]){  // 預期在今天之前
+                    predictdays = -(thisday - ((monthdata[selectedMonth][0] + 28) - daysofmonth[selectedMonth - 1]));
                 }
-                else {  //跨月情況
-                    console.log((daysofmonth[selectedMonth] - thisday) + (monthdata[selectedMonth][0] + 28));
+                else{   //預期在今天之後
+                    predictdays = (((monthdata[selectedMonth][0] + 28) - daysofmonth[selectedMonth - 1] - thisday));
                 }
             }
-
+            else if(selectedMonth + 1 > month ){  //選擇在同月
+                if (((monthdata[selectedMonth][0] + 28) - daysofmonth[selectedMonth - 1]) >= thisday) {    //預期超過今天但還在同個月份
+                    predictdays = (((monthdata[selectedMonth][0] + 28)- daysofmonth[selectedMonth - 1]) - thisday);
+                }
+                else {  //預期跨月
+                    predictdays = ((daysofmonth[selectedMonth - 1] - thisday) + ((monthdata[selectedMonth][0] + 28) - daysofmonth[selectedMonth - 1]));
+                }
+            }
+            temp = (monthdata[selectedMonth][0] + 28);  // 預測日期 temp/daysofmonth[selectedMonth - 1]是否超過月份日期  Math.floor->除法取整數
+            predictdaysText  = "2024年"+(selectedMonth+Math.floor((temp-1)/daysofmonth[selectedMonth - 1]))+"月"+((temp-1)%daysofmonth[selectedMonth - 1]+1)+"日";
+            if(predictdays>=0){
+                text="距離下次經期："
+                day = predictdays;
+            }
+            else{
+                text="已經超過："
+                day = -predictdays;
+            }
         }
     }
-
     return (
         <ScrollView>
             <View style={{ alignItems: 'center', backgroundColor: colorMode === "light" ? "#333333" : "white" }}>
                 <View style={{ width: "100%", paddingHorizontal: "5%" }}>
-                    <Text style={{ fontSize: 14, justifyContent: "flex-start", color: colorMode === "light" ? "white" : "black" }}>距離下次經期：</Text>
+                    <Text style={{ fontSize: 18, justifyContent: "flex-start", color: colorMode === "light" ? "white" : "black" }}>{text}</Text>
                     <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                        <Text style={{ fontSize: 40, color: colorMode === "light" ? "#ff795c" : "black" }}>{day}</Text>
+                        <Text style={{ fontSize: 40, color: "#ff795c"}}>{day}</Text>
                         <Text style={{ fontSize: 15, marginTop: 30, color: colorMode === "light" ? "white" : "black" }}>天</Text>
                     </View>
                     <View style={{ justifyContent: "center", flexDirection: "row" }}>
-                        <Text style={{ fontSize: 12, color: colorMode === "light" ? "white" : "black" }}>2024年5月3日</Text>
+                        <Text style={{ fontSize: 16, color: colorMode === "light" ? "white" : "black" }}>{predictdaysText}</Text>
                     </View>
                     <View style={{ margin: 30 }}>
                         <Image source={{ uri: "https://github.com/emba2ra3star/NTUEDTD_APP_SuGirls/blob/main/assets/img/Group%2097.png?raw=true" }} style={{ width: "100%", height: 11 }} />
