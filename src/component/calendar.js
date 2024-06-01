@@ -6,15 +6,14 @@ import { selectColorMode } from '../redux/darkModeSlice';
 import { useDispatch } from "react-redux";
 import { setSelectedDate } from "../redux/selectedDateSlice";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {updatedata} from '../screen/analyzeScreen';
+import { updatedata } from '../screen/analyzeScreen';
 import { selectanalyzedata, setanalyzedata } from "../redux/analyzedataSlice";
+
 export default function MyCalendar({ periodIsEnable }) {
     // darkMode
     const colorMode = useSelector(selectColorMode);
 
-    
-    
-    // mark selectDay
+    // mark selectDay選擇日期
     const [markedDates, setMarkedDates] = useState({});
 
     // 經期開始按鈕
@@ -28,7 +27,7 @@ export default function MyCalendar({ periodIsEnable }) {
 
     const dispatch = useDispatch();
     const [myData, setMyData] = useState([]);
-    const handleDayPress = (day) => {
+    const handleDayPress = (day) => {   //選擇日期
         const { dateString } = day;
         // 清除updateDay
         const updatedMarkedDates = {}
@@ -46,15 +45,15 @@ export default function MyCalendar({ periodIsEnable }) {
         let Date = day.dateString;
         dispatch(setSelectedDate(Date)) //setSelectedDate為key和action
     };
-    
+
     // mark period
     const [markedPeriod, setMarkedPeriod] = useState({});
     const [startDate, setStartDate] = useState(null); // 儲存開始日期
     const [endDate, setEndDate] = useState(null); // 儲存結束日期
     const setPeriod = (day) => {
         const { dateString } = day;
-        // 如果开始日期还没有选择，则将选择的日期设为开始日期
-        if (!startDate) {
+        // 標記本次週期
+        if (!startDate) {   // 如果开始日期还没有选择，则将选择的日期设为开始日期
             setStartDate(dateString);
         } else if (!endDate) { // 如果结束日期还没有选择，则将选择的日期设为结束日期
             if (dateString < startDate) {   //如果選擇日期比startDate小則會重新選擇startDate
@@ -62,7 +61,8 @@ export default function MyCalendar({ periodIsEnable }) {
             }
             else {
                 setEndDate(dateString);
-                markPeriod(startDate, dateString);  // 标记开始日期到结束日期之间的日期为周期
+                markPeriod(startDate, dateString);  // 標記預測未來週期
+                markedFertilePeriod(startDate);     // 標記預測易孕期
                 enqueueData({ startDate, dateString }); //因為endDate儲存的會是空值，所以改為儲存dateString
                 let Month = startDate.match(/-(\d{2})-/)[1];
                 let startday = startDate.split("-")[2];
@@ -80,8 +80,7 @@ export default function MyCalendar({ periodIsEnable }) {
         }
     };
 
-    // 标记开始日期到结束日期之间的日期为周期
-    const markPeriod = (start, end) => {
+    const markPeriod = (start, end) => {    // 標記預測未來週期
         // 測試predictDate
         const predictDate = getPredictDate(start);
         // 標記predictDate
@@ -111,20 +110,23 @@ export default function MyCalendar({ periodIsEnable }) {
         setMarkedPeriod(marked);
     };
 
-    // 获取下一个日期
-    const getNextDate = (date) => {
+    const getNextDate = (date) => {    // 獲取下一天
         const nextDate = new Date(date);
         nextDate.setDate(nextDate.getDate() + 1);
         return nextDate.toISOString().split('T')[0];
     };
-    // 推算預測日期
-    const getPredictDate = (start) => {
+    const getYesterday = (date) => {    // 獲取上一天
+        const nextDate = new Date(date);
+        nextDate.setDate(nextDate.getDate() - 1);
+        return nextDate.toISOString().split('T')[0];
+    }    
+    const getPredictDate = (start) => { // 推算預測日期
         const pd = new Date(start);
         pd.setDate(pd.getDate() + 28);
         return pd.toISOString().split('T')[0];  //推測的下一次第一天
     };
-    
-    //-----------------------------------------------
+
+    //-------------歷史紀錄的週期(近10筆)-------------
     // 儲存 queue 到 AsyncStorage
     const saveData = async () => {
         try {
@@ -158,7 +160,6 @@ export default function MyCalendar({ periodIsEnable }) {
     };
 
     // 渲染queue
-
     const [prePeriodMarked, setPrePeriodMarked] = useState(myData)
     useEffect(() => {
         const marked = {};
@@ -170,7 +171,7 @@ export default function MyCalendar({ periodIsEnable }) {
                 marked[myData[i].dateString] = { startingDay: false, endingDay: true, color: '#FFC197', textColor: "#fff" };
                 marked[myData[i].startDate] = { startingDay: true, endingDay: false, color: '#FFC197', textColor: "#fff" };
                 let currentD = getNextDate(myData[i].startDate);
-                while (currentD != myData[i].dateString){
+                while (currentD != myData[i].dateString) {
                     marked[currentD] = { startingDay: false, endingDay: false, color: '#FFC197', textColor: "#fff" };
                     currentD = getNextDate(currentD);
                 }
@@ -178,8 +179,33 @@ export default function MyCalendar({ periodIsEnable }) {
         }
 
         setPrePeriodMarked(marked);
-        
+
     }, [myData])
+
+    //-------------標記預測的排卵期&易孕期-------------
+    // 設定易孕期fertilePeriod
+    const [fertilePeriod, setFertilePeriod] = useState({});
+    const markedFertilePeriod = (start) => {    //標記易孕期
+        // 計算排卵日
+        const fertileDate = new Date(start);
+        fertileDate.setDate(fertileDate.getDate() + 14);
+        const a = fertileDate.toISOString().split('T')[0];
+        // 設定所有標記日
+        let currentDate = a;
+        const marked = {};
+        marked[currentDate] = { textColor: "#C686ED" }  //排卵日當天
+        for (let i = 0; i < 4; i++) {   //排卵日後推4天
+            currentDate = getNextDate(currentDate);
+            marked[currentDate] = { textColor: "#C686ED" };
+        }
+        currentDate = a;
+        for (let i = 0; i < 5; i++) {   //排卵日前推5天
+            currentDate=getYesterday(currentDate);
+            marked[currentDate] = { textColor: "#C686ED" };
+        }
+        // 儲存標記日
+        setFertilePeriod(marked);
+    }
 
     return (
         <View style={{ width: "100%", marginTop: 5 }}>
@@ -213,11 +239,12 @@ export default function MyCalendar({ periodIsEnable }) {
                             textColor: "#C686ED"
                         },
                         "2024-03-06": {
-                            textColor: "#C686ED"
+                            textColor: "#C686ED",
                         },
-                        ...markedDates,
-                        ...markedPeriod,
-                        ...prePeriodMarked,
+                        ...fertilePeriod,   //易孕期
+                        ...markedDates,     //選擇日期
+                        ...markedPeriod,    //本次經期
+                        ...prePeriodMarked, //歷史紀錄經期
                     }}
                     theme={{
                         textMonthFontWeight: 'bold', // 月份文字的粗细
