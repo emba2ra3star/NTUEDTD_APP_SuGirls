@@ -19,6 +19,7 @@
     "expo": "~50.0.14",
     "expo-status-bar": "~1.11.1",
     "expo-updates": "~0.24.12",
+    "lottie-react-native": "^6.7.2",
     "react": "18.2.0",
     "react-native": "0.73.6",
     "react-native-calendars": "^1.1304.1",
