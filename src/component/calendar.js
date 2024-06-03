@@ -232,15 +232,6 @@ export default function MyCalendar({ periodIsEnable }) {
                     onDayPress={(day) => { handleDayPress(day), setOnPressDate(day) }} // 选择日期时触发的回调
                     markingType="period"
                     markedDates={{
-                        "2024-03-04": {
-                            textColor: "#C686ED"
-                        },
-                        "2024-03-05": {
-                            textColor: "#C686ED"
-                        },
-                        "2024-03-06": {
-                            textColor: "#C686ED",
-                        },
                         ...fertilePeriod,   //易孕期
                         ...markedDates,     //選擇日期
                         ...markedPeriod,    //本次經期
