@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "fin_SuGirls_Project",
-    "slug": "fin_SuGirls_Project",
+    "name": "SuGirls_Project",
+    "slug": "SuGirls_Project",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
